@@ -2300,3 +2300,71 @@ Usually the event is captured once.
 Microsoft currently describes transaction facts as business events at the lowest useful granularity, generally with additive measurements where appropriate. ([Microsoft Learn][1])
 
 ---
+
+
+# PART 39 — ADDITIVE VS SEMI-ADDITIVE
+
+Now imagine:
+
+```text
+FactSales
+```
+
+has:
+
+```text
+quantity
+net_amount
+profit
+```
+
+These are generally additive.
+
+You can use:
+
+```text
+SUM(net_amount)
+```
+
+across many dimensions.
+
+But inventory:
+
+```text
+closing_quantity
+```
+
+is different.
+
+You don't necessarily do:
+
+```text
+SUM(closing_quantity)
+```
+
+across time.
+
+It is typically:
+
+# SEMI-ADDITIVE
+
+You may aggregate across:
+
+```text
+product
+store
+```
+
+but not blindly across:
+
+```text
+date
+```
+
+This is why understanding measures is not merely:
+
+> "numbers go in fact tables."
+
+You need to understand **how those numbers can be aggregated**.
+
+---
