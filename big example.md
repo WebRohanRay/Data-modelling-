@@ -2368,3 +2368,34 @@ This is why understanding measures is not merely:
 You need to understand **how those numbers can be aggregated**.
 
 ---
+
+
+# PART 40 — NON-ADDITIVE
+
+Examples:
+
+```text
+unit_price
+margin_percent
+conversion_rate
+```
+
+You don't generally:
+
+```text
+SUM(margin_percent)
+```
+
+Instead calculate the metric appropriately.
+
+For example:
+
+```text
+profit / revenue
+```
+
+rather than summing individual percentages.
+
+This is a major analytical correctness issue.
+
+---
