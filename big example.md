@@ -2562,3 +2562,28 @@ Payment Method
 These are natural dimensions.
 
 ---
+
+
+# PART 45 — HOW TO DECIDE WHAT BECOMES A FACT
+
+Ask:
+
+> Is this a measurable event/state?
+
+Examples:
+
+```text
+Sale
+Payment
+Return
+Delivery
+Inventory state
+Purchase receipt
+Support ticket
+```
+
+If yes, candidate fact.
+
+But then you still need the grain decision.
+
+---
