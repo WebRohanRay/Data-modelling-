@@ -364,3 +364,38 @@ Fact
 This is the chain I want you to remember.
 
 ---
+
+
+# PART 4 — BUILD A BUS MATRIX
+
+Now let's make an enterprise bus matrix.
+
+| Business process | Customer | Product | Store | Date | Promotion | Supplier | Courier | Payment Method |
+| ---------------- | -------- | ------- | ----- | ---- | --------- | -------- | ------- | -------------- |
+| Sales            | ✓        | ✓       | ✓     | ✓    | ✓         | —        | —       | —              |
+| Payment          | ✓        | —       | ✓     | ✓    | —         | —        | —       | ✓              |
+| Fulfillment      | ✓        | —       | ✓     | ✓    | —         | —        | ✓       | —              |
+| Delivery         | ✓        | —       | ✓     | ✓    | —         | —        | ✓       | —              |
+| Inventory        | —        | ✓       | ✓     | ✓    | —         | —        | —       | —              |
+| Procurement      | —        | ✓       | ✓     | ✓    | —         | ✓        | —       | —              |
+| Returns          | ✓        | ✓       | ✓     | ✓    | —         | —        | —       | —              |
+| Support          | ✓        | ✓       | ✓     | ✓    | —         | —        | —       | —              |
+
+This matrix answers a major question:
+
+> **Which dimensions should be shared between different fact tables?**
+
+For example:
+
+```text
+DimCustomer
+DimProduct
+DimStore
+DimDate
+```
+
+may become **conformed dimensions**.
+
+Kimball's enterprise bus matrix specifically uses business processes as rows and dimensions as columns to identify shared/conformed dimensions. ([Kimball Group][3])
+
+---
