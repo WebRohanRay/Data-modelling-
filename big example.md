@@ -2970,3 +2970,35 @@ enriched
 But Silver is usually not optimized around every business question.
 
 ---
+
+
+# PART 56 — WHAT GOLD DOES
+
+Gold might contain:
+
+```text
+FactSales
+DimCustomer
+DimProduct
+DimStore
+DimDate
+DimPromotion
+
+FactPayment
+DimPaymentMethod
+
+FactDelivery
+DimCourier
+
+FactInventorySnapshot
+```
+
+So Gold takes reusable Silver data and shapes it around business consumption.
+
+Again:
+
+> **Gold does not mean "one star only."**
+
+It can contain many stars.
+
+---
