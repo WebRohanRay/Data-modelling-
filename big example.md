@@ -2457,3 +2457,20 @@ graph BT
     L3 -->|Rollup SUM| L4
 ```
 > **Atomic Grain Rule**: Always model and preserve the atomic grain in your core fact tables. You can always summarize atomic data up into any level, but you can never drill down from an aggregated table into details that were not preserved.
+
+
+# PART 42 — THE "ONE ROW =" TEST
+
+For every fact you create, write:
+
+```text
+ONE ROW = __________________
+```
+
+If you can't say this clearly:
+
+# DON'T CREATE THE FACT.
+
+This single habit will eliminate a huge number of data-modeling mistakes.
+
+---
