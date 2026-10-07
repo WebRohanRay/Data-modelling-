@@ -2720,3 +2720,38 @@ It's an **aggregate** for a specific performance/use-case requirement.
 Microsoft's current guidance recognizes aggregate fact tables as rollups of base facts used to accelerate common analytical queries. ([Microsoft Learn][1])
 
 ---
+
+
+# PART 49 — DO NOT CONFUSE AGGREGATE WITH ATOMIC
+
+Atomic:
+
+```text
+FactSales
+one order line
+```
+
+Aggregate:
+
+```text
+FactSalesDailyStoreCategory
+one store + category + day
+```
+
+The aggregate has less detail.
+
+Therefore:
+
+```text
+Atomic → can produce aggregate
+```
+
+but:
+
+```text
+Aggregate → cannot recreate lost detail
+```
+
+This is why atomic grain is often preserved when practical.
+
+---
