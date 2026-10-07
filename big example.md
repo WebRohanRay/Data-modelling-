@@ -2278,3 +2278,25 @@ Think:
 This distinction should become automatic.
 
 ---
+
+
+# PART 38 — TRANSACTION FACT
+
+Think:
+
+```text
+A sale happened.
+A payment happened.
+A return happened.
+A purchase line happened.
+```
+
+These are:
+
+# TRANSACTION FACTS
+
+Usually the event is captured once.
+
+Microsoft currently describes transaction facts as business events at the lowest useful granularity, generally with additive measurements where appropriate. ([Microsoft Learn][1])
+
+---
