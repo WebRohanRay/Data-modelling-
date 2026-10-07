@@ -2399,3 +2399,45 @@ rather than summing individual percentages.
 This is a major analytical correctness issue.
 
 ---
+
+
+# PART 41 — FACT TABLE GRANULARITY
+
+Here are GlobalMart's grains:
+
+```text
+FactSales
+→ one product line in one order
+
+FactPayment
+→ one payment attempt
+
+FactDelivery
+→ one delivery
+
+FactInventorySnapshot
+→ one product + store + day
+
+FactPurchaseOrder
+→ one product line in one purchase order
+
+FactGoodsReceipt
+→ one product line received in one receipt event
+
+FactReturn
+→ one returned order line
+
+FactSupportTicket
+→ one support ticket
+
+FactOrderFulfillment
+→ one order lifecycle
+```
+
+Look at this.
+
+Every fact has a **sentence** describing it.
+
+That's what I want you to start doing.
+
+---
