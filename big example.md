@@ -3034,3 +3034,34 @@ flowchart LR
     GOLD --> BI
 ```
 > **Modern Lakehouse Position**: Kimball dimensional modeling is not dead in the modern lakehouse; it lives as the premier architecture in the Gold layer for curated, business-friendly consumption.
+
+
+# PART 57 — IMPORTANT MODERN POINT
+
+The architecture:
+
+```text
+Bronze → Silver → Gold
+```
+
+and the model:
+
+```text
+Fact + Dimension + Star
+```
+
+are **different layers of thinking**.
+
+You can have:
+
+```text
+Lakehouse architecture
+        +
+Star-schema dimensional model
+```
+
+together.
+
+This is exactly what current Databricks guidance demonstrates. ([Databricks Documentation][7])
+
+---
