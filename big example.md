@@ -2253,3 +2253,28 @@ flowchart LR
     STEP4 -->|Delivery Lag| STEP5["5. Delivered<br/>DeliveredDateKey"]
 ```
 > **Accumulating Snapshot Purpose**: An accumulating snapshot record is updated as the order advances through predefined milestones. This allows direct calculation of end-to-end cycle times and identifying fulfillment bottlenecks.
+
+
+# PART 37 — PERIODIC VS ACCUMULATING
+
+Think:
+
+### Inventory
+
+```text
+"What was the state every day?"
+```
+
+→ Periodic snapshot.
+
+### Fulfillment
+
+```text
+"How did this order move through stages?"
+```
+
+→ Accumulating snapshot.
+
+This distinction should become automatic.
+
+---
