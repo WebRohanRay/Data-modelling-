@@ -908,3 +908,54 @@ stateDiagram-v2
     Captured --> [*]
 ```
 > **Why Payment Must Be Separate**: An order may experience three payment failures before a successful capture occurs. If payment were merged into sales lines, tracking failure rates or payment attempt latencies would corrupt sales grain.
+
+
+# PART 11 — WHY PAYMENT DOES NOT BELONG IN FACTSALES
+
+This is where you're supposed to think.
+
+Suppose one order contains:
+
+```text
+many order lines
+```
+
+and has:
+
+```text
+many payment attempts
+```
+
+Those are different grains.
+
+If you combine:
+
+```text
+order line
++
+payment attempt
+```
+
+you risk multiplication.
+
+Therefore:
+
+```text
+FactSales
+```
+
+and:
+
+```text
+FactPayment
+```
+
+are separate.
+
+### Key rule
+
+> **Different grain → separate fact.**
+
+Not always, but as a design warning, this is one of your strongest rules.
+
+---
