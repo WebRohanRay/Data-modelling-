@@ -2474,3 +2474,60 @@ If you can't say this clearly:
 This single habit will eliminate a huge number of data-modeling mistakes.
 
 ---
+
+
+# PART 43 — HOW TO DECIDE WHAT COLUMNS GO INTO THE FACT
+
+Once the grain is defined:
+
+### Ask:
+
+> What dimensions are valid at this grain?
+
+For FactSales:
+
+```text
+one order line
+```
+
+Therefore:
+
+```text
+customer
+product
+store
+date
+channel
+promotion
+```
+
+may be valid.
+
+Then:
+
+> What measurements exist at this grain?
+
+```text
+quantity
+price
+discount
+tax
+cost
+profit
+```
+
+Then:
+
+> Do all these measures describe the same thing at the same grain?
+
+If yes:
+
+```text
+FactSales
+```
+
+If no:
+
+Split.
+
+---
