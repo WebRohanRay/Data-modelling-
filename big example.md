@@ -1239,3 +1239,60 @@ DimDate
 This is another star.
 
 ---
+
+
+# PART 17 — BUT PROCUREMENT DOESN'T END AT ORDERING
+
+Business also wants:
+
+> "How much did suppliers actually deliver?"
+
+Now ask:
+
+Is "ordered" the same process as "received"?
+
+They may be related but not necessarily the same business event.
+
+You might need:
+
+```text
+FactGoodsReceipt
+```
+
+with grain:
+
+# ONE ROW = ONE PRODUCT LINE RECEIVED IN ONE GOODS-RECEIPT EVENT
+
+Structure:
+
+```text
+FactGoodsReceipt
+────────────────────────────────
+goods_receipt_key
+purchase_order_id
+receipt_id
+
+supplier_key
+product_key
+warehouse_key
+receipt_date_key
+
+received_quantity
+accepted_quantity
+rejected_quantity
+purchase_cost
+```
+
+Notice the difference:
+
+```text
+FactPurchaseOrder
+→ what we ordered
+
+FactGoodsReceipt
+→ what we actually received
+```
+
+Different events.
+
+---
