@@ -2911,3 +2911,33 @@ How do I store/process it?
 This is why learning modeling concepts transfers across technologies.
 
 ---
+
+
+# PART 54 — NOW PUT IT IN A MODERN LAKEHOUSE
+
+Your modern GlobalMart architecture might be:
+
+```text
+                 SOURCE SYSTEMS
+                       |
+        ┌──────────────┼───────────────┐
+        ↓              ↓               ↓
+      OLTP            APIs           EVENTS
+        └──────────────┼───────────────┘
+                       ↓
+                    BRONZE
+                       ↓
+                    SILVER
+                       ↓
+                     GOLD
+                       ↓
+      ┌────────────────┼───────────────────┐
+      ↓                ↓                   ↓
+  Sales Star      Inventory Star      Delivery Star
+      ↓                ↓                   ↓
+Power BI        ML / analytics       Applications
+```
+
+Databricks' current documentation describes Bronze → Silver → Gold as progressive refinement, with Gold used for business-ready data, and its current dimensional-modeling guidance says star schemas fit naturally into Gold. ([Databricks Documentation][7])
+
+---
