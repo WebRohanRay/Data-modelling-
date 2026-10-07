@@ -1964,3 +1964,20 @@ receipt_date_key
 Again, same date dimension in different roles.
 
 ---
+
+
+### Date Dimension Role-Playing in Enterprise Semantic Models
+
+```mermaid
+graph LR
+    subgraph Semantic Layer / BI Model
+        FACT["FactOrderFulfillment"]
+        DATE_DIM["DimDate (Physical Table)"]
+
+        FACT -->|"Active Link: OrderDateKey"| DATE_DIM
+        FACT -.->|"Inactive Link: ShipDateKey"| DATE_DIM
+        FACT -.->|"Inactive Link: DeliveryDateKey"| DATE_DIM
+        FACT -.->|"Inactive Link: TargetDateKey"| DATE_DIM
+    end
+```
+> **Semantic Implementation**: Modern BI engines like Microsoft Power BI and Fabric utilize active vs. inactive relationships or DAX `USERELATIONSHIP()` expressions to navigate role-playing dates without duplicating tables in storage.
