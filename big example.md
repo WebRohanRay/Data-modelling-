@@ -3213,3 +3213,40 @@ depending on platform and pipeline architecture.
 The modeling decision matters because you need a stable way to identify the business event.
 
 ---
+
+
+# PART 63 — WHAT IF AN ORDER IS CANCELLED?
+
+Here is another modeling question.
+
+Should you:
+
+```text
+delete the sale?
+```
+
+Usually you need to understand the business semantics first.
+
+Perhaps:
+
+```text
+FactOrderLifecycle
+```
+
+tracks status changes.
+
+Or:
+
+```text
+FactSales
+```
+
+contains the original sale and separate cancellation/return/refund facts record later business events.
+
+The important part:
+
+> **Don't let source CRUD operations automatically determine analytical semantics.**
+
+Business events and analytical meaning come first.
+
+---
