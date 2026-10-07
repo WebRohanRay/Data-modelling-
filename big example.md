@@ -273,3 +273,43 @@ graph TD
     INGEST --> G1 & G2 & G3 & G4 & G5 & G6
 ```
 > **Key Architecture Takeaway**: Notice that each departmental requirement reflects a distinct business process with differing event triggers and natural grains. Attempting to force all these requirements into one table creates grain confusion and data corruption.
+
+
+# PART 2 — YOUR FIRST JOB IS NOT TABLE DESIGN
+
+Your first job is:
+
+# Identify the BUSINESS PROCESSES.
+
+From the requirements:
+
+```text
+Sales
+Payments
+Fulfillment
+Delivery
+Inventory
+Procurement
+Returns
+Marketing
+Customer Support
+Customer Activity
+```
+
+Now we've moved from:
+
+```text
+business questions
+```
+
+to:
+
+```text
+business processes
+```
+
+That's the first big architectural step.
+
+Kimball's current dimensional-modeling guidance still starts with the business process because the selected process becomes the design target from which grain, dimensions, and facts are defined. ([Kimball Group][2])
+
+---
