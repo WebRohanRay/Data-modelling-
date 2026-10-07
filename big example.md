@@ -1547,3 +1547,48 @@ This is a **fact constellation / enterprise dimensional model** with multiple st
 Current Microsoft guidance explicitly states that a star schema often contains multiple fact tables, and therefore multiple stars. ([Microsoft Learn][5])
 
 ---
+
+
+# PART 23 — SHARED DIMENSIONS
+
+Look at this:
+
+```text
+FactSales
+   ↓
+DimCustomer
+
+FactPayment
+   ↓
+DimCustomer
+
+FactReturn
+   ↓
+DimCustomer
+
+FactSupportTicket
+   ↓
+DimCustomer
+```
+
+Same customer concept.
+
+So:
+
+```text
+DimCustomer
+```
+
+can be conformed.
+
+Same with:
+
+```text
+DimProduct
+DimStore
+DimDate
+```
+
+These become shared dimensions.
+
+---
