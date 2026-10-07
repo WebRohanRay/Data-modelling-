@@ -2010,3 +2010,41 @@ The important mental model:
 > **A business identifier useful for analysis can remain in the fact without becoming a separate dimension.**
 
 ---
+
+
+# PART 32 — JUNK DIMENSION
+
+Suppose sales has many small flags:
+
+```text
+is_gift
+is_first_order
+is_coupon_used
+is_marketplace
+is_express
+is_priority
+```
+
+You don't necessarily need a separate dimension for every tiny attribute.
+
+Combine them:
+
+```text
+DimOrderFlags
+────────────────────────
+flag_key
+is_gift
+is_first_order
+is_coupon_used
+is_marketplace
+is_express
+is_priority
+```
+
+That's a:
+
+# JUNK DIMENSION
+
+Microsoft's current star-schema guidance still lists junk dimensions among the established dimensional-modeling techniques. ([Microsoft Learn][8])
+
+---
