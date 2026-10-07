@@ -3929,3 +3929,92 @@ graph TB
     FS & FP & FD & FI & FPO & FR & FCS & FCA === BI
 ```
 > **The GlobalMart Enterprise Galaxy**: This single diagram captures the entire GlobalMart architectural vision. Every fact table remains true to its atomic grain while conformed dimensions enable seamless drill-across reporting across the entire retail empire.
+
+
+# PART 77 — THE RULES I WANT YOU TO BURN INTO MEMORY
+
+## Rule 1
+
+**Requirement first.**
+
+Never design blindly.
+
+## Rule 2
+
+**Business process before fact table.**
+
+## Rule 3
+
+**Grain before columns.**
+
+## Rule 4
+
+Always be able to say:
+
+> **ONE ROW = ______**
+
+## Rule 5
+
+**Different grains should not be mixed casually.**
+
+## Rule 6
+
+**Different questions do not necessarily mean different facts.**
+
+## Rule 7
+
+**Facts represent events or states.**
+
+## Rule 8
+
+**Dimensions provide context.**
+
+## Rule 9
+
+**Measures must be valid at the grain.**
+
+## Rule 10
+
+**Same business process + same grain usually means one fact.**
+
+## Rule 11
+
+**Different business process or incompatible grain usually means separate facts.**
+
+## Rule 12
+
+**Conformed dimensions connect multiple stars.**
+
+## Rule 13
+
+**SCD is a business-history decision.**
+
+## Rule 14
+
+**SCD2 = preserve historical versions.**
+
+## Rule 15
+
+**Star schema is an analytical modeling pattern, not the entire data architecture.**
+
+## Rule 16
+
+**Bronze/Silver/Gold and Fact/Dimension are different concepts.**
+
+## Rule 17
+
+**Source tables do not have to become Gold tables one-for-one.**
+
+## Rule 18
+
+**Don't create a new fact just because someone asks a new question.**
+
+## Rule 19
+
+**Use atomic data when detailed analysis matters; aggregate when performance/use case justifies it.**
+
+## Rule 20
+
+**The right model is the one that correctly represents the business and supports its required analysis.**
+
+---
