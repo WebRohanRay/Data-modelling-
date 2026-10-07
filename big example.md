@@ -3165,3 +3165,28 @@ Current Microsoft guidance describes fact processing as looking up dimension sur
 That is very real Data Engineering work.
 
 ---
+
+
+# PART 61 — WHAT IF THE SOURCE HAS DUPLICATES?
+
+Suppose the source sends the same order line twice.
+
+Your Silver pipeline may detect:
+
+```text
+duplicate business key
+```
+
+such as:
+
+```text
+order_id
++
+order_line_number
+```
+
+You need idempotent processing.
+
+This is why modeling, data quality, and pipeline engineering are connected.
+
+---
