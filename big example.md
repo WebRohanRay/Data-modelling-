@@ -1316,3 +1316,63 @@ sequenceDiagram
     AP->>Vendor: 6. Remit Payment (FactSupplierPayment)
 ```
 > **P2P Modeling Principle**: Because PO creation, physical receiving, and invoice disbursement occur weeks apart and at different grains, enterprise procurement is modeled as a pipeline of coordinating fact tables or an accumulating snapshot.
+
+
+# PART 18 — RETURNS
+
+Requirement:
+
+> "Analyze returned order items and refund amounts."
+
+Business process:
+
+```text
+Returns
+```
+
+Grain:
+
+# ONE ROW = ONE RETURNED ORDER LINE
+
+Fact:
+
+```text
+FactReturn
+────────────────────────────────
+return_key
+return_id
+order_id
+order_line_number
+
+customer_key
+product_key
+store_key
+return_date_key
+return_reason_key
+
+quantity_returned
+refund_amount
+restocking_fee
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimProduct
+DimStore
+DimDate
+DimReturnReason
+```
+
+Again:
+
+```text
+new process
++
+new grain
+=
+new fact
+```
+
+---
