@@ -2649,3 +2649,34 @@ flowchart TD
     Q3 -- Yes --> COMBINE["Safe to Combine into One Fact Table<br/>(e.g., Gross Sales & Discount at line grain)"]
 ```
 > **Segregation Rule**: When in doubt, separate facts by business process. Conformed dimensions will seamlessly bridge them during reporting without the risk of grain distortion.
+
+
+# PART 47 — WHY NOT CREATE A FACT FOR EVERY QUESTION?
+
+Because dimensions are designed to let one fact answer many analytical questions.
+
+One FactSales can support:
+
+```text
+Revenue by country
+Revenue by product
+Revenue by customer
+Revenue by category
+Revenue by month
+Revenue by channel
+Revenue by store
+Revenue by promotion
+```
+
+You don't need:
+
+```text
+FactRevenueCountry
+FactRevenueProduct
+FactRevenueCustomer
+FactRevenueMonth
+```
+
+That's redundant.
+
+---
