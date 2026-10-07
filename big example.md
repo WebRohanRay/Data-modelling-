@@ -1763,3 +1763,51 @@ This leads us to:
 # SURROGATE KEYS
 
 ---
+
+
+# PART 27 — SCD TYPE 2
+
+Suppose a customer's segment changes.
+
+Business says:
+
+> "We need historical reporting."
+
+You cannot simply overwrite:
+
+```text
+Silver → Gold
+```
+
+because then old sales would appear to have been made when the customer was Gold.
+
+Instead create dimension versions.
+
+Conceptually:
+
+```text
+DimCustomer
+──────────────────────────────────────
+customer_key
+customer_id
+customer_name
+segment
+country
+effective_from
+effective_to
+is_current
+```
+
+Now:
+
+```text
+customer_id
+   ↓
+same business customer
+   ↓
+multiple dimension versions
+```
+
+Facts point to the correct surrogate version.
+
+---
