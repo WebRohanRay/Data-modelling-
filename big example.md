@@ -1473,3 +1473,54 @@ The point is:
 You can create derived facts if the business need justifies them.
 
 ---
+
+
+# PART 21 — MARKETING PERFORMANCE
+
+Now here's where I want you to think before creating anything.
+
+Marketing says:
+
+> "Show revenue from each promotion."
+
+Do we need:
+
+```text
+FactPromotionPerformance
+```
+
+Not necessarily.
+
+Why?
+
+Because `FactSales` already contains:
+
+```text
+promotion_key
+net_amount
+discount_amount
+```
+
+So we can calculate:
+
+```text
+Revenue by Promotion
+Discount by Promotion
+Orders by Promotion
+```
+
+using:
+
+```text
+FactSales
++
+DimPromotion
+```
+
+### IMPORTANT
+
+> **A new business question does not automatically require a new fact table.**
+
+This single idea will save you from creating dozens of unnecessary tables.
+
+---
