@@ -1137,3 +1137,24 @@ Fact type:
 # PERIODIC SNAPSHOT
 
 ---
+
+
+### Periodic Snapshot vs Event Transaction Flowchart
+
+```mermaid
+flowchart TD
+    subgraph Continuous Real-Time Inventory Events
+        T1["Goods Receipt (+100)"]
+        T2["Store Sale (-2)"]
+        T3["Online Pick & Pack (-1)"]
+        T4["Damaged Item Write-off (-1)"]
+    end
+
+    T1 & T2 & T3 & T4 --> LEDGER["Transactional Movement Log"]
+
+    subgraph Periodic Snapshot Engine
+        LEDGER --> SNAP["Scheduled Daily Snapshot Engine (Midnight)"]
+        SNAP --> FACT_SNAP["FactInventorySnapshot<br/>Grain: 1 Row = 1 Product in 1 Facility per Day<br/>QuantityOnHand = 96<br/>InventoryValuation = $1,920.00"]
+    end
+```
+> **Periodic Snapshot Value**: Without snapshotting, calculating inventory value on October 1st from five years of raw transactions requires summing millions of historical deltas. A periodic snapshot enables instantaneous point-in-time state queries.
