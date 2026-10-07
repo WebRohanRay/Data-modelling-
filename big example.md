@@ -1658,3 +1658,43 @@ flowchart TD
     end
 ```
 > **Drill-Across Rule**: You never perform a raw SQL JOIN directly between FactSales and FactInventory. Instead, query each fact independently grouped by the conformed dimension attributes, and stitch the two results together in the semantic layer.
+
+
+# PART 25 — THE ENTERPRISE MODEL
+
+At a high level:
+
+```text
+                         ┌────────────────┐
+                         │ DimCustomer    │
+                         └───────┬────────┘
+                                 │
+          ┌──────────────────────┼───────────────────────┐
+          │                      │                       │
+          ▼                      ▼                       ▼
+      FactSales             FactPayment             FactReturn
+          │                      │                       │
+          │                      │                       │
+     DimProduct          DimPaymentMethod        DimReturnReason
+          │
+          │
+     DimStore
+          │
+          │
+        DimDate
+          │
+      ┌───┼────────────────────┐
+      │   │                    │
+      ▼   ▼                    ▼
+FactDelivery          FactInventorySnapshot   FactPurchaseOrder
+   │                         │                    │
+DimCourier               DimProduct          DimSupplier
+                          DimStore            DimWarehouse
+                          DimDate             DimDate
+```
+
+This isn't necessarily physically one diagram in the database.
+
+It's the **logical analytical architecture**.
+
+---
