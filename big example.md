@@ -758,3 +758,29 @@ campaign_end_date
 ```
 
 ---
+
+
+### Dimension Attribute Hierarchies & Normalization Mapping
+
+```mermaid
+graph TD
+    subgraph Product Dimension Hierarchy
+        SKU["SKU Level (Lowest Grain)"] --> SUBCAT["Sub-Category (e.g., Wireless Mice)"]
+        SUBCAT --> CAT["Category (e.g., Computer Accessories)"]
+        CAT --> DEPT["Department (e.g., Electronics)"]
+    end
+
+    subgraph Store Geography Hierarchy
+        STORE["Store ID (Retail Location / DC)"] --> CITY["City (e.g., Seattle)"]
+        CITY --> STATE["State / Province (e.g., WA)"]
+        STATE --> REGION["Territory / Region (e.g., Pacific NW)"]
+        REGION --> CTRY["Country (e.g., United States)"]
+    end
+
+    subgraph Calendar Dimension Hierarchy
+        DAY["Date / Day (YYYY-MM-DD)"] --> MONTH["Fiscal / Calendar Month"]
+        MONTH --> QTR["Fiscal Quarter (Q1-Q4)"]
+        QTR --> YEAR["Calendar Year (YYYY)"]
+    end
+```
+> **Dimensional Design Principle**: In dimensional modeling, attribute hierarchies are deliberately denormalized into wide dimension tables to eliminate multi-table joins and optimize BI self-service query performance.
