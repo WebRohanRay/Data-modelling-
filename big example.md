@@ -3130,3 +3130,38 @@ This is a **late-arriving dimension** problem.
 This is the kind of thing you encounter in actual pipelines, not just textbook diagrams.
 
 ---
+
+
+# PART 60 — SCD LOOKUP DURING FACT LOADING
+
+Suppose FactSales contains:
+
+```text
+customer_key
+```
+
+The pipeline needs to determine:
+
+> Which customer dimension version applies to this sale?
+
+For SCD2:
+
+```text
+sale_date
+      ↓
+find customer version
+      ↓
+effective_from <= sale_date
+AND
+effective_to > sale_date
+      ↓
+retrieve customer_key
+      ↓
+write to FactSales
+```
+
+Current Microsoft guidance describes fact processing as looking up dimension surrogate keys, including the correct SCD2 version. ([Microsoft Learn][9])
+
+That is very real Data Engineering work.
+
+---
