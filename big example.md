@@ -3340,3 +3340,15 @@ CONSUMPTION
 ```
 
 ---
+
+
+### The 4-Step Kimball Dimensional Design Process Flowchart
+
+```mermaid
+flowchart TD
+    S1["1. Select the Business Process<br/>Identify the operational activity to measure (Sales, Inventory, Deliveries)"] --> S2["2. Declare the Grain<br/>Define the exact physical meaning of one row in the fact table"]
+    S2 --> S3["3. Identify the Dimensions<br/>Determine the context (Who, What, Where, When, Why, How)"]
+    S3 --> S4["4. Identify the Facts<br/>Determine the numeric additive/semi-additive measurements"]
+    S4 --> VERIFY["5. Validate Against Requirements<br/>Ensure all business KPIs can be derived without SQL anomalies"]
+```
+> **Methodology Rigor**: Skipping straight to step 4 (facts) without declaring step 2 (grain) is the #1 cause of failed data warehouse projects.
