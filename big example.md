@@ -1636,3 +1636,25 @@ with conflicting definitions.
 Microsoft's current guidance specifically identifies conformed dimensions as dimensions shared across multiple fact tables/stars for consistency and reduced maintenance. ([Microsoft Learn][6])
 
 ---
+
+
+### Conformed Dimensions Cross-Process Drill-Across Flowchart
+
+```mermaid
+flowchart TD
+    subgraph Process 1: Sales Analysis
+        FS["FactSales"] --> D_PROD["Conformed DimProduct"]
+        FS --> D_DATE["Conformed DimDate"]
+    end
+
+    subgraph Process 2: Inventory Analysis
+        FI["FactInventorySnapshot"] --> D_PROD
+        FI --> D_DATE
+    end
+
+    subgraph Federated Analytical Drill-Across
+        D_PROD & D_DATE --> JOIN["Semantic Engine / Drill-Across Query"]
+        JOIN --> BI["Global Dashboard:<br/>Sales Velocity vs Days of Supply by Category"]
+    end
+```
+> **Drill-Across Rule**: You never perform a raw SQL JOIN directly between FactSales and FactInventory. Instead, query each fact independently grouped by the conformed dimension attributes, and stitch the two results together in the semantic layer.
