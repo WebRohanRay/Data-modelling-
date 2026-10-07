@@ -3804,3 +3804,86 @@ Then:
 That is the mindset you're trying to build.
 
 ---
+
+
+# PART 76 — THE ENTIRE GLOBALMART MODEL IN ONE VIEW
+
+```text
+                         GLOBALMART
+                              |
+       ┌──────────────────────┼─────────────────────────┐
+       ↓                      ↓                         ↓
+     SALES                  PAYMENT                  DELIVERY
+       ↓                      ↓                         ↓
+  FactSales             FactPayment              FactDelivery
+       |                      |                         |
+       |                      |                         |
+ ┌─────┼─────────┐      ┌─────┼──────┐           ┌──────┼───────┐
+ ↓     ↓         ↓      ↓     ↓      ↓           ↓      ↓       ↓
+Cust Product    Store   Cust  Date Payment      Cust   Store  Courier
+ ↓      ↓         ↓                     Method
+ └──────┴─────────┴──────────────────────────────┐
+                                                  ↓
+                                               DimDate
+
+
+              INVENTORY
+                  ↓
+       FactInventorySnapshot
+            /       |       \
+           /        |        \
+      Product     Store     Date
+
+
+              PROCUREMENT
+                  ↓
+       FactPurchaseOrder
+          /      |       \
+     Supplier Product   Warehouse
+              |
+              Date
+
+
+            GOODS RECEIPT
+                  ↓
+         FactGoodsReceipt
+          /       |       \
+     Supplier  Product  Warehouse
+                  |
+                 Date
+
+
+                RETURNS
+                   ↓
+              FactReturn
+          /       |        \
+     Customer  Product    Store
+                   |
+             Return Reason
+                   |
+                  Date
+
+
+               SUPPORT
+                  ↓
+         FactSupportTicket
+       /     |       |       \
+ Customer Product   Agent    Issue
+                 \
+                 Date
+
+
+        ORDER FULFILLMENT
+                  ↓
+       FactOrderFulfillment
+        /       |       \
+   Customer    Store    Courier
+        \       |       /
+         \      |      /
+           Role-Playing
+              Dates
+```
+
+That is an enterprise-level **dimensional data model**.
+
+---
