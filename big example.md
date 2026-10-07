@@ -3887,3 +3887,45 @@ Cust Product    Store   Cust  Date Payment      Cust   Store  Courier
 That is an enterprise-level **dimensional data model**.
 
 ---
+
+
+### Master GlobalMart Enterprise Constellation Architecture Visual Map
+
+```mermaid
+graph TB
+    subgraph Conformed Enterprise Dimensions
+        D_DATE["DimDate"]
+        D_PROD["DimProduct"]
+        D_CUST["DimCustomer"]
+        D_STORE["DimStore"]
+        D_CHAN["DimSalesChannel"]
+        D_SUPP["DimSupplier"]
+        D_CARRIER["DimCarrier"]
+    end
+
+    subgraph Analytical Fact Core
+        FS["FactSales<br/>(Order Line Grain)"]
+        FP["FactPayment<br/>(Attempt Grain)"]
+        FD["FactDelivery<br/>(Package Grain)"]
+        FI["FactInventorySnapshot<br/>(Daily Balance Grain)"]
+        FPO["FactPurchaseOrder<br/>(PO Line Grain)"]
+        FR["FactReturn<br/>(Returned Line Grain)"]
+        FCS["FactCustomerSupport<br/>(Ticket Grain)"]
+        FCA["FactCustomerActivity<br/>(Click Grain)"]
+    end
+
+    subgraph Consumer Analytics
+        BI["Global Semantic Layer & Executive Dashboards"]
+    end
+
+    D_DATE -.-> FS & FP & FD & FI & FPO & FR & FCS & FCA
+    D_PROD -.-> FS & FI & FPO & FR & FCA
+    D_CUST -.-> FS & FP & FD & FR & FCS & FCA
+    D_STORE -.-> FS & FP & FD & FI & FR
+    D_CHAN -.-> FS & FP & FCA
+    D_SUPP -.-> FPO
+    D_CARRIER -.-> FD
+
+    FS & FP & FD & FI & FPO & FR & FCS & FCA === BI
+```
+> **The GlobalMart Enterprise Galaxy**: This single diagram captures the entire GlobalMart architectural vision. Every fact table remains true to its atomic grain while conformed dimensions enable seamless drill-across reporting across the entire retail empire.
