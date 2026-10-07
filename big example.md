@@ -1730,3 +1730,36 @@ graph TB
     F_RET --- DIM_DATE & DIM_PROD & DIM_CUST & DIM_STORE
 ```
 > **Enterprise Constellation**: The enterprise data warehouse is not a single giant star schema; it is a constellation of multiple stars bound together by shared, conformed dimensions.
+
+
+# PART 26 — NOW ASK: WHY DO WE NEED DIMENSION KEYS?
+
+Suppose `DimCustomer` contains:
+
+```text
+customer_key
+customer_id
+customer_name
+country
+segment
+```
+
+FactSales uses:
+
+```text
+customer_key
+```
+
+Why not just:
+
+```text
+customer_id
+```
+
+Because the warehouse may need to distinguish historical versions.
+
+This leads us to:
+
+# SURROGATE KEYS
+
+---
