@@ -2587,3 +2587,50 @@ If yes, candidate fact.
 But then you still need the grain decision.
 
 ---
+
+
+# PART 46 — HOW TO DECIDE WHETHER TWO THINGS BELONG IN ONE FACT
+
+Suppose:
+
+```text
+quantity
+discount
+tax
+revenue
+profit
+```
+
+All describe:
+
+```text
+one order line
+```
+
+→ Same fact.
+
+But:
+
+```text
+payment_amount
+delivery_minutes
+inventory_balance
+```
+
+don't describe the same grain.
+
+→ Separate facts.
+
+The core test:
+
+```text
+Same process?
++
+Same grain?
++
+Measures naturally coexist?
+```
+
+If yes, same fact is often sensible.
+
+---
