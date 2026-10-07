@@ -51,3 +51,183 @@ Loyalty Program
 And now management comes to you.
 
 ---
+
+
+# PART 1 — THE BUSINESS REQUIREMENTS
+
+This is the most important starting point.
+
+The business gives you this requirement document.
+
+## Sales team
+
+They want:
+
+```text
+Revenue by:
+- country
+- region
+- store
+- product
+- category
+- customer
+- sales channel
+- promotion
+- day
+- month
+- quarter
+- year
+
+They also need:
+- quantity sold
+- gross sales
+- discount
+- tax
+- net sales
+- cost
+- profit
+```
+
+---
+
+## Finance team
+
+They want:
+
+```text
+Payment attempts
+Successful payments
+Failed payments
+Payment failure reasons
+Payment methods
+Payment providers
+Fees
+Collected amount
+Refunds
+```
+
+---
+
+## Logistics team
+
+They want:
+
+```text
+Order fulfillment time
+Packing time
+Shipping time
+Delivery time
+Late deliveries
+Courier performance
+Distance
+Delivery cost
+```
+
+---
+
+## Inventory team
+
+They want:
+
+```text
+Daily inventory by product and location
+Opening stock
+Closing stock
+Received stock
+Sold stock
+Returned stock
+Damaged stock
+Out-of-stock periods
+Inventory value
+```
+
+---
+
+## Procurement team
+
+They want:
+
+```text
+Purchase orders
+Supplier performance
+Ordered quantity
+Received quantity
+Rejected quantity
+Purchase cost
+Lead time
+```
+
+---
+
+## Returns team
+
+They want:
+
+```text
+Products returned
+Return reasons
+Refund amount
+Return rate
+Return by customer
+Return by store
+Return by product
+```
+
+---
+
+## Marketing
+
+They want:
+
+```text
+Campaign performance
+Promotion usage
+Discount
+Revenue generated
+Customer acquisition
+Customer retention
+Customer lifetime value
+```
+
+---
+
+## Customer support
+
+They want:
+
+```text
+Support tickets
+Issue category
+Resolution time
+Customer
+Product
+Order
+Agent
+Satisfaction
+```
+
+---
+
+## Executive dashboard
+
+CEO wants:
+
+```text
+Revenue
+Profit
+Orders
+Customers
+Inventory
+Returns
+Delivery performance
+Payment success
+Marketing performance
+```
+
+Now stop.
+
+**We have not created a single table yet.**
+
+And that's intentional.
+
+---
