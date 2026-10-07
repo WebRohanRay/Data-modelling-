@@ -784,3 +784,28 @@ graph TD
     end
 ```
 > **Dimensional Design Principle**: In dimensional modeling, attribute hierarchies are deliberately denormalized into wide dimension tables to eliminate multi-table joins and optimize BI self-service query performance.
+
+
+# PART 9 — OUR SALES STAR
+
+```text
+                         DimCustomer
+                              |
+                              |
+DimProduct ------------- FactSales ------------- DimDate
+                              |
+                              |
+                          DimStore
+                              |
+                              |
+                         DimChannel
+                              |
+                              |
+                        DimPromotion
+```
+
+That is one star.
+
+But GlobalMart needs much more.
+
+---
