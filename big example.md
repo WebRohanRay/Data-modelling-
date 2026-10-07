@@ -433,3 +433,54 @@ graph LR
     BP_SUPP === D_DATE & D_CUST & D_CHAN
 ```
 > **Bus Matrix Rule**: The rows represent business processes; the columns represent conformed dimensions. An intersection signifies that the dimensional context is natively valid at that process grain.
+
+
+# PART 5 — NOW DESIGN ONE PROCESS AT A TIME
+
+Let's start with:
+
+# SALES
+
+Business requirement:
+
+> "We need product-level revenue analysis by customer, product, store, channel, promotion and time."
+
+Now think.
+
+---
+
+## Step 1 — Business process
+
+```text
+Sales
+```
+
+## Step 2 — What happened?
+
+```text
+A product was sold.
+```
+
+## Step 3 — What level of detail?
+
+The business wants:
+
+```text
+product-level
+```
+
+So ask:
+
+> What should one row represent?
+
+Our decision:
+
+# ONE ROW = ONE PRODUCT LINE IN ONE ORDER
+
+That's our grain.
+
+This is the critical decision.
+
+Microsoft currently emphasizes that the fact-table grain should be explicitly defined and consistently maintained; its current guidance also notes that storing data at too high a grain can make later detailed analysis impossible. ([Microsoft Learn][1])
+
+---
