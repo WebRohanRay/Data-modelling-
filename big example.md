@@ -1524,3 +1524,26 @@ DimPromotion
 This single idea will save you from creating dozens of unnecessary tables.
 
 ---
+
+
+# PART 22 — NOW LOOK AT THE FACTS
+
+We have:
+
+```text
+FactSales
+FactPayment
+FactDelivery
+FactInventorySnapshot
+FactPurchaseOrder
+FactGoodsReceipt
+FactReturn
+FactSupportTicket
+FactCustomerDailyActivity
+```
+
+This is a **fact constellation / enterprise dimensional model** with multiple stars.
+
+Current Microsoft guidance explicitly states that a star schema often contains multiple fact tables, and therefore multiple stars. ([Microsoft Learn][5])
+
+---
