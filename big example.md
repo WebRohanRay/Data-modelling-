@@ -2152,3 +2152,37 @@ Now you can answer:
 This is an example of how **business relationships** can require additional modeling structures.
 
 ---
+
+
+# PART 35 — FACTLESS FACT
+
+Suppose GlobalMart launches a campaign:
+
+> "Which customers were eligible for which promotion?"
+
+There may not be a numeric measure.
+
+You could have:
+
+```text
+FactPromotionEligibility
+────────────────────────────
+customer_key
+promotion_key
+date_key
+channel_key
+```
+
+The row itself represents an event/relationship:
+
+```text
+customer was eligible for promotion
+```
+
+You can count rows.
+
+That's a **factless fact**.
+
+Current Microsoft guidance explicitly includes factless facts as valid fact tables. ([Microsoft Learn][1])
+
+---
