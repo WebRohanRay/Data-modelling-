@@ -1158,3 +1158,28 @@ flowchart TD
     end
 ```
 > **Periodic Snapshot Value**: Without snapshotting, calculating inventory value on October 1st from five years of raw transactions requires summing millions of historical deltas. A periodic snapshot enables instantaneous point-in-time state queries.
+
+
+# PART 15 — WHY SNAPSHOT?
+
+Because we're capturing:
+
+> "What was the inventory state at the end of each day?"
+
+We aren't recording just one event.
+
+We are recording a state repeatedly.
+
+So:
+
+```text
+Sales
+→ transaction fact
+
+Inventory
+→ periodic snapshot fact
+```
+
+Microsoft's current fact guidance recognizes transaction, periodic snapshot, and accumulating snapshot facts as the primary fact types. ([Microsoft Learn][1])
+
+---
