@@ -1592,3 +1592,47 @@ DimDate
 These become shared dimensions.
 
 ---
+
+
+# PART 24 — WHAT DOES "CONFORMED" REALLY MEAN?
+
+It means the dimension has a **consistent business meaning and definition across fact tables**.
+
+Imagine:
+
+```text
+DimProduct
+```
+
+is used by:
+
+```text
+FactSales
+FactReturn
+FactInventory
+FactPurchase
+```
+
+Then everybody uses the same:
+
+```text
+product_id
+brand
+category
+subcategory
+department
+```
+
+You avoid:
+
+```text
+SalesCategory
+InventoryCategory
+ReturnsCategory
+```
+
+with conflicting definitions.
+
+Microsoft's current guidance specifically identifies conformed dimensions as dimensions shared across multiple fact tables/stars for consistency and reduced maintenance. ([Microsoft Learn][6])
+
+---
