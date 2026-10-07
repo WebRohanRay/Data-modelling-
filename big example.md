@@ -570,3 +570,53 @@ flowchart TD
     end
 ```
 > **Fact Table Grain Rule**: Never store order-level summary totals in an order-line fact table without allocating them, because doing so creates aggregation errors when summing across dimensions.
+
+
+# PART 7 — WHY DID WE NOT PUT PRODUCT NAME IN FACTSALES?
+
+Bad design:
+
+```text
+FactSales
+─────────────────────────
+order_id
+product_id
+product_name
+brand
+category
+customer_name
+country
+store_name
+city
+amount
+```
+
+You are repeating descriptive information billions of times.
+
+Instead:
+
+```text
+FactSales
+    |
+product_key
+    ↓
+DimProduct
+```
+
+And:
+
+```text
+FactSales
+    |
+customer_key
+    ↓
+DimCustomer
+```
+
+The fact represents **the event**.
+
+Dimensions describe the event.
+
+Current Microsoft guidance explicitly defines dimensions as descriptive entities and facts as event/measurement tables used in analytical aggregation. ([Microsoft Learn][4])
+
+---
