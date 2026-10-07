@@ -620,3 +620,141 @@ Dimensions describe the event.
 Current Microsoft guidance explicitly defines dimensions as descriptive entities and facts as event/measurement tables used in analytical aggregation. ([Microsoft Learn][4])
 
 ---
+
+
+# PART 8 — DESIGN THE DIMENSIONS
+
+## DimCustomer
+
+```text
+DimCustomer
+────────────────────────────────
+customer_key
+customer_id
+customer_name
+customer_segment
+gender
+date_of_birth
+country
+state
+city
+postal_code
+signup_date
+acquisition_channel
+loyalty_tier
+```
+
+Questions this answers:
+
+```text
+Who purchased?
+Which segment?
+Which country?
+Which city?
+Which loyalty tier?
+```
+
+---
+
+## DimProduct
+
+```text
+DimProduct
+────────────────────────────────
+product_key
+product_id
+product_name
+brand
+category
+subcategory
+department
+product_type
+unit
+size
+color
+supplier_category
+```
+
+Questions:
+
+```text
+What was sold?
+Which category?
+Which brand?
+Which department?
+```
+
+---
+
+## DimStore
+
+```text
+DimStore
+────────────────────────────────
+store_key
+store_id
+store_name
+store_type
+city
+state
+country
+region
+store_format
+opening_date
+```
+
+---
+
+## DimDate
+
+```text
+DimDate
+────────────────────────────────
+date_key
+full_date
+day
+week
+month
+month_name
+quarter
+year
+day_of_week
+is_weekend
+is_holiday
+fiscal_month
+fiscal_quarter
+fiscal_year
+```
+
+---
+
+## DimChannel
+
+```text
+DimChannel
+────────────────────────
+channel_key
+channel_code
+channel_name
+channel_type
+device_type
+```
+
+---
+
+## DimPromotion
+
+```text
+DimPromotion
+────────────────────────────────
+promotion_key
+promotion_id
+promotion_name
+campaign_name
+promotion_type
+discount_type
+campaign_start_date
+campaign_end_date
+```
+
+---
