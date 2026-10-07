@@ -2048,3 +2048,51 @@ That's a:
 Microsoft's current star-schema guidance still lists junk dimensions among the established dimensional-modeling techniques. ([Microsoft Learn][8])
 
 ---
+
+
+# PART 33 — BRIDGE TABLES / MANY-TO-MANY
+
+Here's an advanced problem.
+
+Suppose:
+
+> One promotion can involve multiple products.
+
+And:
+
+> One product can belong to multiple promotions.
+
+That's:
+
+```text
+Product M : M Promotion
+```
+
+You don't simply join them directly.
+
+You may need a bridge:
+
+```text
+BridgeProductPromotion
+────────────────────────
+product_key
+promotion_key
+effective_from
+effective_to
+```
+
+Now:
+
+```text
+DimProduct
+     |
+     |
+BridgeProductPromotion
+     |
+     |
+DimPromotion
+```
+
+This is useful when the relationship itself matters.
+
+---
