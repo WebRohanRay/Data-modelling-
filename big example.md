@@ -3701,3 +3701,47 @@ That matches the way analytical questions are asked.
 Microsoft's current guidance describes this exact relationship: dimensions support filtering/grouping while facts support summarization. ([Microsoft Learn][8])
 
 ---
+
+
+# PART 74 — ONE MORE ADVANCED CONCEPT: SEMANTIC LAYER
+
+After Gold:
+
+```text
+FactSales
+DimCustomer
+DimProduct
+DimDate
+```
+
+Power BI/Fabric may create a semantic model containing:
+
+```text
+Revenue
+Gross Margin %
+Orders
+Average Order Value
+Return Rate
+```
+
+The semantic model translates technical warehouse structures into business-friendly analytical metrics.
+
+Current Microsoft Fabric documentation describes semantic models as logical descriptions of an analytical domain, typically using fact and dimension structures. ([Microsoft Learn][10])
+
+So your complete stack can be:
+
+```text
+Source
+ ↓
+Bronze
+ ↓
+Silver
+ ↓
+Gold dimensional model
+ ↓
+Semantic model
+ ↓
+Power BI
+```
+
+---
