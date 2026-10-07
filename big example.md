@@ -399,3 +399,37 @@ may become **conformed dimensions**.
 Kimball's enterprise bus matrix specifically uses business processes as rows and dimensions as columns to identify shared/conformed dimensions. ([Kimball Group][3])
 
 ---
+
+
+### Enterprise Data Warehouse Bus Matrix Visual Relationship Map
+
+```mermaid
+graph LR
+    subgraph Core Business Processes
+        BP_SALES["Retail & E-Com Sales"]
+        BP_PAY["Payment Processing"]
+        BP_SHIP["Delivery & Logistics"]
+        BP_INV["Inventory Snapshots"]
+        BP_PROC["Procurement POs"]
+        BP_RET["Merchandise Returns"]
+        BP_SUPP["Customer Support"]
+    end
+
+    subgraph Conformed Dimensional Bus
+        D_DATE["DimDate (Calendar & Fiscal)"]
+        D_PROD["DimProduct (SKU Hierarchy)"]
+        D_CUST["DimCustomer (Demographics)"]
+        D_STORE["DimStore (Physical & Digital)"]
+        D_CHAN["DimSalesChannel (Omnichannel)"]
+        D_SUPP["DimSupplier (Vendor Network)"]
+    end
+
+    BP_SALES === D_DATE & D_PROD & D_CUST & D_STORE & D_CHAN
+    BP_PAY === D_DATE & D_CUST & D_STORE & D_CHAN
+    BP_SHIP === D_DATE & D_CUST & D_STORE
+    BP_INV === D_DATE & D_PROD & D_STORE
+    BP_PROC === D_DATE & D_PROD & D_SUPP
+    BP_RET === D_DATE & D_PROD & D_CUST & D_STORE
+    BP_SUPP === D_DATE & D_CUST & D_CHAN
+```
+> **Bus Matrix Rule**: The rows represent business processes; the columns represent conformed dimensions. An intersection signifies that the dimensional context is natively valid at that process grain.
