@@ -3407,3 +3407,40 @@ which type?
 If you can answer these five, you can usually get surprisingly far.
 
 ---
+
+
+# PART 67 — NOW THE BIG FACT-TABLE DECISION TREE
+
+```text
+                     REQUIREMENT
+                          |
+                          ↓
+                  What business process?
+                          |
+                          ↓
+                  What event/state?
+                          |
+                          ↓
+                    What is the grain?
+                          |
+           ┌──────────────┼──────────────┐
+           ↓              ↓              ↓
+       TRANSACTION     PERIODIC       ACCUMULATING
+           │          SNAPSHOT          SNAPSHOT
+           ↓              ↓              ↓
+        FactSales    FactInventory   FactFulfillment
+        FactPayment
+        FactReturn
+           |
+           ↓
+    Are the measures
+    at the same grain?
+       /          \
+     YES           NO
+      ↓             ↓
+  Same fact     Split facts
+```
+
+That is the model-selection thinking you want.
+
+---
