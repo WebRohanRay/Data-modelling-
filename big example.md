@@ -3654,3 +3654,50 @@ Make a matrix:
 If a requirement cannot be answered cleanly, revisit your model.
 
 ---
+
+
+# PART 73 — THE "WHY" OF STAR SCHEMA
+
+Now you should see why we create it.
+
+Not because:
+
+> "The textbook says fact goes in the center."
+
+We create it because analytics usually asks:
+
+```text
+MEASURE
+BY
+DIMENSIONS
+```
+
+Example:
+
+```text
+SUM(net_amount)
+BY
+country
+category
+month
+```
+
+Fact:
+
+```text
+net_amount
+```
+
+Dimensions:
+
+```text
+country
+category
+month
+```
+
+That matches the way analytical questions are asked.
+
+Microsoft's current guidance describes this exact relationship: dimensions support filtering/grouping while facts support summarization. ([Microsoft Learn][8])
+
+---
