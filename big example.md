@@ -2809,3 +2809,24 @@ Department
 ```
 
 ---
+
+
+# PART 51 — WHY DIMENSIONS CAN BE WIDE
+
+A beginner may think:
+
+> "A dimension should have only 5 columns."
+
+No.
+
+A useful dimension can be very wide.
+
+Current Microsoft guidance explicitly notes that dimensions can be millions of rows and potentially hundreds of attributes; what matters is whether those attributes support required filtering, grouping, and accurate historical analysis. ([Microsoft Learn][6])
+
+So:
+
+```text
+Dimension ≠ tiny table
+```
+
+---
