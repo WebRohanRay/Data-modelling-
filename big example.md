@@ -3444,3 +3444,20 @@ If you can answer these five, you can usually get surprisingly far.
 That is the model-selection thinking you want.
 
 ---
+
+
+### Master Fact Table Type Selection Decision Tree
+
+```mermaid
+flowchart TD
+    Q1{"What is the business phenomenon being analyzed?"}
+
+    Q1 -->|"Discrete point-in-time event"| Q2{"Are there numeric metrics generated?"}
+    Q2 -->|"Yes (Amount, Quantity, Hours)"| T1["Transaction Fact Table<br/>(FactSales, FactPayment, FactWebClick)"]
+    Q2 -->|"No (Only event occurrence or state coverage)"| T4["Factless Fact Table<br/>(FactPromotionCoverage, FactAttendance)"]
+
+    Q1 -->|"Status/Level at regular recurring time intervals"| T2["Periodic Snapshot Fact Table<br/>(FactDailyInventoryBalance, FactAccountDailyBalance)"]
+
+    Q1 -->|"Finite workflow with sequential pipeline milestones"| T3["Accumulating Snapshot Fact Table<br/>(FactOrderFulfillment, FactInsuranceClaimLifecycle)"]
+```
+> **Fact Table Selection**: Matching the business phenomenon to the correct fact table pattern guarantees that downstream BI queries remain simple, fast, and mathematically accurate.
