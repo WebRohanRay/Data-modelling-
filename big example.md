@@ -2186,3 +2186,58 @@ That's a **factless fact**.
 Current Microsoft guidance explicitly includes factless facts as valid fact tables. ([Microsoft Learn][1])
 
 ---
+
+
+# PART 36 — ACCUMULATING SNAPSHOT
+
+Now consider order fulfillment.
+
+Requirement:
+
+> Track the lifecycle:
+
+```text
+Order Created
+↓
+Packed
+↓
+Shipped
+↓
+Delivered
+```
+
+This is not simply a sale.
+
+You may design:
+
+```text
+FactOrderFulfillment
+────────────────────────────────
+order_key
+customer_key
+store_key
+courier_key
+
+created_date_key
+packed_date_key
+shipped_date_key
+delivered_date_key
+
+created_to_pack_minutes
+pack_to_ship_minutes
+ship_to_delivery_minutes
+total_cycle_minutes
+late_flag
+```
+
+Grain:
+
+# ONE ROW = ONE ORDER FULFILLMENT LIFECYCLE
+
+This is:
+
+# ACCUMULATING SNAPSHOT
+
+Because the row gets updated as the process passes through milestones.
+
+---
