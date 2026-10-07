@@ -1065,3 +1065,25 @@ graph TD
     ROLE_DELIV -.-> PHYS_DATE
 ```
 > **Role-Playing Mechanism**: The physical `DimDate` table exists only once in the database, but is referenced multiple times with distinct semantic aliases to represent the different dates in a delivery lifecycle.
+
+
+# PART 13 — DELIVERY STAR
+
+```text
+                         DimCustomer
+                              |
+                              |
+DimStore ---------------- FactDelivery ---------------- DimCourier
+                              |
+                              |
+                           DimDate
+                         /        \
+                        /          \
+               pickup date     delivery date
+```
+
+Same date dimension.
+
+Two roles.
+
+---
