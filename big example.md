@@ -3745,3 +3745,62 @@ Power BI
 ```
 
 ---
+
+
+# PART 75 — NOW THINK LIKE A HIGH-LEVEL DATA ENGINEER
+
+A beginner says:
+
+> "I'll create FactSales."
+
+A stronger engineer says:
+
+> "What is the sales business process?"
+
+Then:
+
+> "What is the atomic grain?"
+
+Then:
+
+> "Which measures are additive at that grain?"
+
+Then:
+
+> "Which dimensions describe those measures?"
+
+Then:
+
+> "Which dimensions should be conformed?"
+
+Then:
+
+> "What historical behavior do the dimensions require?"
+
+Then:
+
+> "Can the model answer every required analytical question?"
+
+Then:
+
+> "What volume will we have?"
+
+Then:
+
+> "Do we need aggregate facts?"
+
+Then:
+
+> "How will late-arriving dimensions be handled?"
+
+Then:
+
+> "How will the pipeline maintain referential integrity?"
+
+Then:
+
+> "How will the physical platform store and serve it?"
+
+That is the mindset you're trying to build.
+
+---
