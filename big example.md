@@ -3352,3 +3352,58 @@ flowchart TD
     S4 --> VERIFY["5. Validate Against Requirements<br/>Ensure all business KPIs can be derived without SQL anomalies"]
 ```
 > **Methodology Rigor**: Skipping straight to step 4 (facts) without declaring step 2 (grain) is the #1 cause of failed data warehouse projects.
+
+
+# PART 66 — THE 5 QUESTIONS THAT SOLVE MOST FACT-DESIGN PROBLEMS
+
+Whenever you feel confused, ask:
+
+### 1. What business process is this?
+
+```text
+Sales?
+Payment?
+Delivery?
+Inventory?
+```
+
+### 2. What happened?
+
+```text
+Sale?
+Payment attempt?
+Delivery?
+Inventory observation?
+```
+
+### 3. What does ONE ROW represent?
+
+```text
+one order?
+one order line?
+one payment attempt?
+one product-store-day?
+```
+
+### 4. What numbers describe that event/state?
+
+```text
+quantity?
+amount?
+minutes?
+balance?
+```
+
+### 5. What dimensions give us context?
+
+```text
+who?
+what?
+when?
+where?
+which type?
+```
+
+If you can answer these five, you can usually get surprisingly far.
+
+---
