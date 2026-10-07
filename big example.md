@@ -1296,3 +1296,23 @@ FactGoodsReceipt
 Different events.
 
 ---
+
+
+### Procure-to-Pay (P2P) Pipeline & 3-Way Matching Flowchart
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Buyer as Purchasing Dept
+    actor Vendor as Supplier
+    actor DC as Warehouse Receiving
+    actor AP as Accounts Payable
+
+    Buyer->>Vendor: 1. Issue Purchase Order (FactPurchaseOrderLines)
+    Vendor->>DC: 2. Deliver Physical Inventory
+    DC->>DC: 3. Inspect & Log Goods Receipt (FactGoodsReceiptLines)
+    Vendor->>AP: 4. Submit Vendor Invoice
+    AP->>AP: 5. Perform 3-Way Match (PO Qty/Price == Receipt Qty == Invoice Qty/Price)
+    AP->>Vendor: 6. Remit Payment (FactSupplierPayment)
+```
+> **P2P Modeling Principle**: Because PO creation, physical receiving, and invoice disbursement occur weeks apart and at different grains, enterprise procurement is modeled as a pipeline of coordinating fact tables or an accumulating snapshot.
