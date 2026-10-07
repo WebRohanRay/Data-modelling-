@@ -4018,3 +4018,27 @@ Always be able to say:
 **The right model is the one that correctly represents the business and supports its required analysis.**
 
 ---
+
+
+# PART 78 — THE ONE SENTENCE THAT SUMMARIZES EVERYTHING
+
+When a business gives you requirements:
+
+> **Identify the business processes, determine what event/state each process represents, declare the grain, choose the appropriate fact type, select the measures valid at that grain, attach the right dimensions, preserve required history, conform shared dimensions, and only then decide how to physically implement and optimize the model.**
+
+That is the entire game.
+
+You now have the **mental framework**.
+
+The next thing you should do is not read another chapter. **You should design GlobalMart yourself.** I would give you only the business requirements for one department at a time, you would decide **what to create, what not to create, the grain, fact type, dimensions, SCD strategy and star schema**, and I would challenge every decision like a senior Data Engineer review.
+
+[1]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-fact-tables?utm_source=chatgpt.com "Modeling Fact Tables in Warehouse - Microsoft Fabric | Microsoft Learn"
+[2]: https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/business-process/?utm_source=chatgpt.com "Business Processes | Kimball Dimensional Modeling Techniques"
+[3]: https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/enterprise-data-warehouse-bus-matrix/?utm_source=chatgpt.com "Enterprise Data Warehouse Bus Matrix | Kimball Dimensional Modeling Techniques"
+[4]: https://learn.microsoft.com/en-us/fabric/data-warehouse/tables?utm_source=chatgpt.com "Tables in Fabric Data Warehouse - Microsoft Fabric | Microsoft Learn"
+[5]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-overview?trk=article-ssr-frontend-pulse_little-text-block&utm_source=chatgpt.com "Dimensional Modeling - Microsoft Fabric | Microsoft Learn"
+[6]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables?utm_source=chatgpt.com "Modeling Dimension Tables in Warehouse - Microsoft Fabric | Microsoft Learn"
+[7]: https://docs.databricks.com/gcp/en/ldp/best-practices/dimensional-modeling?utm_source=chatgpt.com "Dimensional modeling in Lakeflow pipelines | Databricks on Google Cloud"
+[8]: https://learn.microsoft.com/en-us/power-bi/guidance/star-schema?WT.mc_id=AI-MVP-5004077&utm_source=chatgpt.com "Understand star schema and the importance for Power BI - Power BI | Microsoft Learn"
+[9]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-load-tables?utm_source=chatgpt.com "Load Tables in a Dimensional Model - Microsoft Fabric | Microsoft Learn"
+[10]: https://learn.microsoft.com/en-us/fabric/data-warehouse/model-default-power-bi-dataset?utm_source=chatgpt.com "Power BI Semantic Models - Microsoft Fabric | Microsoft Learn"
