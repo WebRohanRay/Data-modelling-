@@ -3065,3 +3065,37 @@ together.
 This is exactly what current Databricks guidance demonstrates. ([Databricks Documentation][7])
 
 ---
+
+
+# PART 58 — DATA QUALITY ENTERS AFTER MODELING
+
+Suppose FactSales expects:
+
+```text
+customer_key
+product_key
+date_key
+```
+
+You need checks:
+
+```text
+customer key valid?
+product key valid?
+date key valid?
+quantity valid?
+amount valid?
+duplicate order line?
+```
+
+Dimensions need checks:
+
+```text
+customer_id unique?
+only one current SCD2 row?
+category valid?
+```
+
+If a fact dimension lookup fails, a warehouse may use an **Unknown** dimension member rather than breaking the fact load; Microsoft explicitly describes this pattern and notes that ETL must still protect dimensional integrity. ([Microsoft Learn][9])
+
+---
