@@ -1827,3 +1827,36 @@ gantt
     CustomerKey 5912 (IsCurrent=True)  :active, 2025-10-01, 2026-10-08
 ```
 > **Surrogate Key Invariance**: Sales made to customer #100492 in 2023 permanently point to `CustomerKey 1042`, preserving historical reporting for Texas sales tax, even when the customer later relocates to London.
+
+
+# PART 28 — WHY THIS MATTERS
+
+Suppose a sale happened while customer was:
+
+```text
+Silver
+```
+
+Later:
+
+```text
+Silver → Gold
+```
+
+Historical analysis should answer:
+
+> What was the customer classified as when the sale happened?
+
+If you overwrote the dimension:
+
+```text
+Gold
+```
+
+you've lost the historical state.
+
+SCD2 preserves it.
+
+Databricks' current 2026 dimensional-modeling guidance explicitly supports SCD Type 2 in Gold-layer dimensions when historical versions are required. ([Databricks Documentation][7])
+
+---
