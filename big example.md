@@ -3002,3 +3002,35 @@ Again:
 It can contain many stars.
 
 ---
+
+
+### Modern Lakehouse Medallion Pipeline Architecture
+
+```mermaid
+flowchart LR
+    subgraph Ingestion
+        RAW["OLTP RDBMS, Kafka Streams, SaaS APIs"]
+    end
+
+    subgraph Bronze Layer
+        BRONZE["Raw Parquet / Delta Lake<br/>Append-only historical archive<br/>Preserves source schema"]
+    end
+
+    subgraph Silver Layer
+        SILVER["Cleansed & Conformed Delta Tables<br/>Deduplicated, schema-enforced<br/>3NF / Normalized business entities"]
+    end
+
+    subgraph Gold Layer
+        GOLD["Dimensional Models (Kimball)<br/>Conformed Dimensions & Star Facts<br/>High-performance analytical marts"]
+    end
+
+    subgraph Consumption
+        BI["Power BI, ThoughtSpot, ML Pipelines"]
+    end
+
+    RAW --> BRONZE
+    BRONZE --> SILVER
+    SILVER --> GOLD
+    GOLD --> BI
+```
+> **Modern Lakehouse Position**: Kimball dimensional modeling is not dead in the modern lakehouse; it lives as the premier architecture in the Gold layer for curated, business-friendly consumption.
