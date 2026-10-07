@@ -3099,3 +3099,34 @@ category valid?
 If a fact dimension lookup fails, a warehouse may use an **Unknown** dimension member rather than breaking the fact load; Microsoft explicitly describes this pattern and notes that ETL must still protect dimensional integrity. ([Microsoft Learn][9])
 
 ---
+
+
+# PART 59 — LATE-ARRIVING DATA
+
+Now advanced.
+
+Suppose:
+
+```text
+Sale arrives today.
+```
+
+But customer information arrives tomorrow.
+
+What happens?
+
+You still may need to load the sale.
+
+So the fact can initially point to:
+
+```text
+Unknown Customer
+```
+
+Then later be corrected when the dimension information arrives.
+
+This is a **late-arriving dimension** problem.
+
+This is the kind of thing you encounter in actual pipelines, not just textbook diagrams.
+
+---
