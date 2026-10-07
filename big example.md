@@ -1036,3 +1036,32 @@ This is a:
 Current Microsoft guidance explicitly calls out this pattern: the same physical dimension can be referenced multiple times in a fact for different roles, such as order date and ship date. ([Microsoft Learn][1])
 
 ---
+
+
+### Multi-Date Role-Playing Dimension Architecture
+
+```mermaid
+graph TD
+    subgraph Central Delivery Fact
+        FD["FactDelivery<br/>1 Row = 1 Delivery Package"]
+    end
+
+    subgraph Role-Playing Views
+        ROLE_ORD["OrderDate (DimDate Alias)"]
+        ROLE_SHIP["ShipDate (DimDate Alias)"]
+        ROLE_DELIV["DeliveryDate (DimDate Alias)"]
+    end
+
+    subgraph Physical Dimension Storage
+        PHYS_DATE["DimDate Master Table<br/>DateKey, CalendarDate, FiscalWeek, Quarter, Year"]
+    end
+
+    FD -->|OrderDateKey| ROLE_ORD
+    FD -->|ShipDateKey| ROLE_SHIP
+    FD -->|DeliveryDateKey| ROLE_DELIV
+
+    ROLE_ORD -.-> PHYS_DATE
+    ROLE_SHIP -.-> PHYS_DATE
+    ROLE_DELIV -.-> PHYS_DATE
+```
+> **Role-Playing Mechanism**: The physical `DimDate` table exists only once in the database, but is referenced multiple times with distinct semantic aliases to represent the different dates in a delivery lifecycle.
