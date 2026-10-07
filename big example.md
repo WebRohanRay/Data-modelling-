@@ -2869,3 +2869,45 @@ For analytics, simpler dimension relationships can often make querying easier.
 Microsoft currently recommends star-schema design for Fabric analytical workloads, while acknowledging that modeling is a balance rather than a rigid rule. ([Microsoft Learn][5])
 
 ---
+
+
+# PART 53 — DATA MODEL VS PHYSICAL STORAGE
+
+This is extremely important.
+
+Suppose your logical design is:
+
+```text
+FactSales
+DimCustomer
+DimProduct
+DimDate
+```
+
+You can physically implement it using:
+
+```text
+Fabric Warehouse
+Snowflake
+Databricks / Delta
+BigQuery
+Synapse
+```
+
+The logical model isn't the same thing as the physical platform.
+
+Think:
+
+```text
+LOGICAL MODEL
+What does the data mean?
+        ↓
+FACT / DIMENSION / GRAIN
+        ↓
+PHYSICAL PLATFORM
+How do I store/process it?
+```
+
+This is why learning modeling concepts transfers across technologies.
+
+---
