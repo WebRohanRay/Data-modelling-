@@ -3632,3 +3632,25 @@ Yes.
 Now you've validated the model.
 
 ---
+
+
+# PART 72 — "CAN MY MODEL ANSWER THE REQUIREMENTS?"
+
+This is one of your final design checks.
+
+Make a matrix:
+
+| Requirement            | Fact                   | Dimensions                   |
+| ---------------------- | ---------------------- | ---------------------------- |
+| Revenue by country     | FactSales              | Customer, Date               |
+| Revenue by product     | FactSales              | Product                      |
+| Payment failure        | FactPayment            | Payment Method, Date         |
+| Delivery SLA           | FactDelivery           | Store, Courier, Date         |
+| Daily stock            | FactInventorySnapshot  | Product, Store, Date         |
+| Supplier delivery rate | FactGoodsReceipt       | Supplier, Product, Warehouse |
+| Return rate            | FactReturn + FactSales | Product, Customer, Date      |
+| Support resolution     | FactSupportTicket      | Agent, Issue, Customer       |
+
+If a requirement cannot be answered cleanly, revisit your model.
+
+---
