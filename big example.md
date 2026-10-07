@@ -2830,3 +2830,42 @@ Dimension ≠ tiny table
 ```
 
 ---
+
+
+# PART 52 — SNOWFLAKE DIMENSION
+
+Suppose:
+
+```text
+DimProduct
+```
+
+contains:
+
+```text
+category
+subcategory
+department
+```
+
+You could normalize:
+
+```text
+DimProduct
+    ↓
+DimSubcategory
+    ↓
+DimCategory
+    ↓
+DimDepartment
+```
+
+That becomes a snowflake-style dimension.
+
+But you should not automatically normalize everything.
+
+For analytics, simpler dimension relationships can often make querying easier.
+
+Microsoft currently recommends star-schema design for Fabric analytical workloads, while acknowledging that modeling is a balance rather than a rigid rule. ([Microsoft Learn][5])
+
+---
