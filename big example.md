@@ -3533,3 +3533,31 @@ That's a huge insight.
 > **Fact tables are analytical representations of business processes, not necessarily copies of source tables.**
 
 ---
+
+
+# PART 70 — GOLD MODEL DOES NOT HAVE TO MIRROR SILVER
+
+Silver:
+
+```text
+orders
+order_items
+payment_attempts
+inventory_movements
+```
+
+Gold:
+
+```text
+FactSales
+FactPayment
+FactInventorySnapshot
+```
+
+Different structure.
+
+Different purpose.
+
+That is completely normal.
+
+---
