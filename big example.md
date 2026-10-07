@@ -809,3 +809,26 @@ That is one star.
 But GlobalMart needs much more.
 
 ---
+
+
+### GlobalMart Sales Star Schema Architectural Diagram
+
+```mermaid
+graph TD
+    FS["FactSales<br/>(Atomic Line-Item Grain)"]
+
+    D1["DimDate<br/>DateKey (PK)"]
+    D2["DimProduct<br/>ProductKey (PK)"]
+    D3["DimCustomer<br/>CustomerKey (PK)"]
+    D4["DimStore<br/>StoreKey (PK)"]
+    D5["DimPromotion<br/>PromotionKey (PK)"]
+    D6["DimSalesChannel<br/>SalesChannelKey (PK)"]
+
+    FS -->|DateKey (FK)| D1
+    FS -->|ProductKey (FK)| D2
+    FS -->|CustomerKey (FK)| D3
+    FS -->|StoreKey (FK)| D4
+    FS -->|PromotionKey (FK)| D5
+    FS -->|SalesChannelKey (FK)| D6
+```
+> **The Classic Star**: All dimension tables have direct, single-hop 1:N relationships to the central FactSales table. This is the optimal physical and semantic model for business intelligence engines.
