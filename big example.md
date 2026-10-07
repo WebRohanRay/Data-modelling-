@@ -1087,3 +1087,53 @@ Same date dimension.
 Two roles.
 
 ---
+
+
+# PART 14 — INVENTORY
+
+Now your thinking gets more advanced.
+
+Requirement:
+
+> "Every day, we need product inventory at every store."
+
+Ask:
+
+### Is inventory an event or state?
+
+Mostly:
+
+```text
+STATE
+```
+
+### What does one row represent?
+
+# ONE ROW = ONE PRODUCT + ONE STORE + ONE DAY
+
+This is not the same as sales.
+
+Fact:
+
+```text
+FactInventorySnapshot
+────────────────────────────────
+date_key
+product_key
+store_key
+
+opening_quantity
+received_quantity
+sold_quantity
+returned_quantity
+damaged_quantity
+closing_quantity
+inventory_value
+out_of_stock_flag
+```
+
+Fact type:
+
+# PERIODIC SNAPSHOT
+
+---
