@@ -2634,3 +2634,18 @@ Measures naturally coexist?
 If yes, same fact is often sensible.
 
 ---
+
+
+### Architectural Decision Flowchart: Separate vs Merged Fact Tables
+
+```mermaid
+flowchart TD
+    START["Two Business Events to Model"] --> Q1{"Do they happen at the exact same instant?"}
+    Q1 -- No --> SPLIT["Create Separate Fact Tables<br/>(e.g., Sales vs Delivery)"]
+    Q1 -- Yes --> Q2{"Do they share the exact same natural grain?"}
+    Q2 -- No --> SPLIT
+    Q2 -- Yes --> Q3{"Do they have identical dimensional dimensionality?"}
+    Q3 -- No --> SPLIT
+    Q3 -- Yes --> COMBINE["Safe to Combine into One Fact Table<br/>(e.g., Gross Sales & Discount at line grain)"]
+```
+> **Segregation Rule**: When in doubt, separate facts by business process. Conformed dimensions will seamlessly bridge them during reporting without the risk of grain distortion.
