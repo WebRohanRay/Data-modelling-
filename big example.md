@@ -2441,3 +2441,19 @@ Every fact has a **sentence** describing it.
 That's what I want you to start doing.
 
 ---
+
+
+### Granularity Rollup Hierarchy & Loss of Analytical Context
+
+```mermaid
+graph BT
+    L1["Atomic Grain: 1 Row = 1 Line Item<br/>(Can answer every query, filter, and rollup)"]
+    L2["Header Grain: 1 Row = 1 Order<br/>(Loses product-level margins and basket association)"]
+    L3["Store Daily Grain: 1 Row = 1 Store per Day<br/>(Loses individual customer identity and basket context)"]
+    L4["Monthly Region Grain: 1 Row = 1 Region per Month<br/>(Loses daily seasonality and local store variance)"]
+
+    L1 -->|Rollup SUM| L2
+    L2 -->|Rollup SUM| L3
+    L3 -->|Rollup SUM| L4
+```
+> **Atomic Grain Rule**: Always model and preserve the atomic grain in your core fact tables. You can always summarize atomic data up into any level, but you can never drill down from an aggregated table into details that were not preserved.
