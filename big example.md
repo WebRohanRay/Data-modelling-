@@ -1860,3 +1860,53 @@ SCD2 preserves it.
 Databricks' current 2026 dimensional-modeling guidance explicitly supports SCD Type 2 in Gold-layer dimensions when historical versions are required. ([Databricks Documentation][7])
 
 ---
+
+
+# PART 29 — BUT DON'T MAKE EVERY DIMENSION SCD2
+
+This is another senior-level judgment.
+
+Suppose:
+
+```text
+customer_name
+```
+
+contains a typo.
+
+You probably don't need:
+
+```text
+Version 1 = Rohn
+Version 2 = Rohan
+```
+
+for every typo.
+
+You may use:
+
+```text
+SCD Type 1
+```
+
+for corrections.
+
+But:
+
+```text
+customer_segment
+sales_region
+loyalty_tier
+```
+
+might require historical tracking.
+
+Therefore:
+
+> **History strategy is driven by business meaning.**
+
+Not:
+
+> "All dimensions = SCD2."
+
+---
