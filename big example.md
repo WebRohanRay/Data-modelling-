@@ -959,3 +959,80 @@ are separate.
 Not always, but as a design warning, this is one of your strongest rules.
 
 ---
+
+
+# PART 12 — DELIVERY PROCESS
+
+Requirement:
+
+> "Measure delivery time, distance, lateness and courier performance."
+
+Business process:
+
+```text
+Delivery
+```
+
+What happened?
+
+```text
+A delivery occurred.
+```
+
+Grain:
+
+# ONE ROW = ONE DELIVERY
+
+Fact:
+
+```text
+FactDelivery
+────────────────────────────────
+delivery_key
+order_id
+
+customer_key
+store_key
+courier_key
+
+pickup_date_key
+delivery_date_key
+
+delivery_status
+promised_minutes
+actual_minutes
+late_minutes
+distance_km
+delivery_fee
+delivery_cost
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimStore
+DimCourier
+DimDate
+```
+
+Now:
+
+```text
+pickup_date_key
+delivery_date_key
+```
+
+Both connect to the same physical:
+
+```text
+DimDate
+```
+
+This is a:
+
+# ROLE-PLAYING DIMENSION
+
+Current Microsoft guidance explicitly calls out this pattern: the same physical dimension can be referenced multiple times in a fact for different roles, such as order date and ship date. ([Microsoft Learn][1])
+
+---
