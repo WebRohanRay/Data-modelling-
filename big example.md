@@ -2680,3 +2680,43 @@ FactRevenueMonth
 That's redundant.
 
 ---
+
+
+# PART 48 — WHEN AN AGGREGATE FACT MAY MAKE SENSE
+
+Suppose:
+
+```text
+FactSales
+```
+
+has:
+
+```text billions of rows
+```
+
+and management constantly asks:
+
+```text
+daily revenue
+by store
+by category
+```
+
+You might create:
+
+```text
+FactSalesDailyStoreCategory
+```
+
+with grain:
+
+# ONE ROW = ONE STORE + ONE PRODUCT CATEGORY + ONE DAY
+
+This is not replacing the atomic fact.
+
+It's an **aggregate** for a specific performance/use-case requirement.
+
+Microsoft's current guidance recognizes aggregate fact tables as rollups of base facts used to accelerate common analytical queries. ([Microsoft Learn][1])
+
+---
