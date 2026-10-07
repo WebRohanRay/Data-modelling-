@@ -890,3 +890,21 @@ DimPaymentProvider
 ```
 
 ---
+
+
+### Payment Processing State Machine & Attempt Cardinality
+
+```mermaid
+stateDiagram-v2
+    [*] --> Initiated: Customer Submits Payment
+    Initiated --> Processing: Payment Gateway Handshake
+    Processing --> CardDeclined: Insufficient Funds
+    CardDeclined --> RetryAttempt: User Enters Alternative Card
+    RetryAttempt --> Processing
+    Processing --> Timeout: Gateway Network Timeout
+    Timeout --> RetryAttempt
+    Processing --> Authorized: Bank Approval & Token Issued
+    Authorized --> Captured: Settlement Cleared
+    Captured --> [*]
+```
+> **Why Payment Must Be Separate**: An order may experience three payment failures before a successful capture occurs. If payment were merged into sales lines, tracking failure rates or payment attempt latencies would corrupt sales grain.
