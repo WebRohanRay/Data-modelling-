@@ -832,3 +832,61 @@ graph TD
     FS -->|SalesChannelKey (FK)| D6
 ```
 > **The Classic Star**: All dimension tables have direct, single-hop 1:N relationships to the central FactSales table. This is the optimal physical and semantic model for business intelligence engines.
+
+
+# PART 10 — THE PAYMENT PROCESS
+
+Requirement:
+
+> "Finance needs every payment attempt, including failures."
+
+Think:
+
+```text
+Business process
+→ Payment
+```
+
+What happened?
+
+```text
+A payment attempt occurred.
+```
+
+What is the grain?
+
+# ONE ROW = ONE PAYMENT ATTEMPT
+
+Now create:
+
+```text
+FactPayment
+────────────────────────────────
+payment_key
+payment_id
+order_id
+
+customer_key
+store_key
+date_key
+payment_method_key
+payment_provider_key
+
+attempt_number
+payment_status
+failure_reason
+payment_amount
+processing_fee
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimStore
+DimDate
+DimPaymentMethod
+DimPaymentProvider
+```
+
+---
