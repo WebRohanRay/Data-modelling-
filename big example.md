@@ -1429,3 +1429,47 @@ DimIssue
 ```
 
 ---
+
+
+# PART 20 — CUSTOMER ACTIVITY
+
+Marketing says:
+
+> "We want daily active customer behavior."
+
+Now think carefully.
+
+Maybe:
+
+# ONE ROW = ONE CUSTOMER + ONE DAY
+
+Fact:
+
+```text
+FactCustomerDailyActivity
+────────────────────────────────
+date_key
+customer_key
+
+sessions
+orders
+items_purchased
+revenue
+returns
+support_tickets
+is_active
+```
+
+This is a derived analytical fact.
+
+It's not an independent raw business event in the same way a sale is.
+
+It could be useful as an **aggregate/behavioral fact**.
+
+The point is:
+
+> **Not every fact has to directly mirror one source transaction table.**
+
+You can create derived facts if the business need justifies them.
+
+---
