@@ -550,3 +550,23 @@ order_line_number
 These can remain as degenerate/business identifiers in the fact.
 
 ---
+
+
+### FactSales Atomic Grain Resolution Flowchart
+
+```mermaid
+flowchart TD
+    CART["Customer Checkout Order<br/>OrderID #98721 (Multi-Item Cart)"] --> SPLIT["Line Item Decomposition"]
+    SPLIT --> L1["Item 1: 4K Monitor (SKU-A)"]
+    SPLIT --> L2["Item 2: HDMI Cable (SKU-B)"]
+    SPLIT --> L3["Item 3: USB Hub (SKU-C)"]
+
+    subgraph Atomic Line Processing
+        L1 --> G1["Atomic Grain Declaration:<br/>1 Row = 1 Product Line Item in 1 Order"]
+        G1 --> SURR["Surrogate Key Lookup Engine"]
+        SURR --> KEYS["Resolve DateKey, ProductKey, CustomerKey, StoreKey, PromotionKey"]
+        KEYS --> METRICS["Compute Fully Additive Measures:<br/>Quantity, GrossAmount, DiscountAmount, TaxAmount, NetAmount, CostAmount, MarginAmount"]
+        METRICS --> INSERT["Insert FactSales Atomic Record"]
+    end
+```
+> **Fact Table Grain Rule**: Never store order-level summary totals in an order-line fact table without allocating them, because doing so creates aggregation errors when summing across dimensions.
