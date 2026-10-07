@@ -1981,3 +1981,32 @@ graph LR
     end
 ```
 > **Semantic Implementation**: Modern BI engines like Microsoft Power BI and Fabric utilize active vs. inactive relationships or DAX `USERELATIONSHIP()` expressions to navigate role-playing dates without duplicating tables in storage.
+
+
+# PART 31 — DEGNERATE DIMENSION
+
+In FactSales:
+
+```text
+order_id
+```
+
+might not justify its own dimension.
+
+But analysts may need to filter by:
+
+```text
+order_id
+```
+
+So keep it directly in the fact.
+
+That's a:
+
+# DEGENERATE DIMENSION
+
+The important mental model:
+
+> **A business identifier useful for analysis can remain in the fact without becoming a separate dimension.**
+
+---
