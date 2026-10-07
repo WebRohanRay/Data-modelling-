@@ -1183,3 +1183,59 @@ Inventory
 Microsoft's current fact guidance recognizes transaction, periodic snapshot, and accumulating snapshot facts as the primary fact types. ([Microsoft Learn][1])
 
 ---
+
+
+# PART 16 — PROCUREMENT
+
+Requirement:
+
+> "Analyze supplier orders, received quantities, rejected quantities and cost."
+
+Business process:
+
+```text
+Procurement / Purchase Order
+```
+
+What happened?
+
+```text
+A purchase order line was created.
+```
+
+Grain:
+
+# ONE ROW = ONE PRODUCT LINE IN ONE PURCHASE ORDER
+
+Fact:
+
+```text
+FactPurchaseOrder
+────────────────────────────────
+purchase_order_key
+purchase_order_id
+purchase_order_line_number
+
+supplier_key
+product_key
+warehouse_key
+order_date_key
+expected_date_key
+
+ordered_quantity
+unit_cost
+ordered_amount
+```
+
+Dimensions:
+
+```text
+DimSupplier
+DimProduct
+DimWarehouse
+DimDate
+```
+
+This is another star.
+
+---
