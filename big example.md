@@ -3190,3 +3190,26 @@ You need idempotent processing.
 This is why modeling, data quality, and pipeline engineering are connected.
 
 ---
+
+
+# PART 62 — WHAT IF DATA ARRIVES TWICE?
+
+A strong data pipeline should be able to handle retries.
+
+You might use:
+
+```text
+business key
++
+deduplication
++
+MERGE / upsert
++
+checkpointing
+```
+
+depending on platform and pipeline architecture.
+
+The modeling decision matters because you need a stable way to identify the business event.
+
+---
