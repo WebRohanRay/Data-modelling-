@@ -231,3 +231,45 @@ Now stop.
 And that's intentional.
 
 ---
+
+
+### Departmental Analytical Architecture & Requirements Flowchart
+
+```mermaid
+graph TD
+    subgraph Departmental Stakeholders
+        S1["Sales Team<br/>Gross/Net Rev, Margins, Discounts"]
+        S2["Finance Team<br/>Payment Auth/Failures, Fee Analysis"]
+        S3["Supply Chain<br/>Warehouse Stockouts, Safety Stock"]
+        S4["Logistics Team<br/>Delivery SLAs, Carrier Speed"]
+        S5["Marketing Team<br/>CAC, ROAS, Campaign Attribution"]
+        S6["Procurement<br/>Supplier Lead Times, PO Fill Rate"]
+        S7["CX Support<br/>Resolution Time, CSAT, Ticket Volume"]
+        S8["Executive Office<br/>Consolidated Global GMV & Growth"]
+    end
+
+    subgraph Analytical Ingestion Engine
+        INGEST["Central Enterprise Ingestion & Conformance Engine"]
+    end
+
+    subgraph Gold Dimensional Warehouse
+        G1["Sales Star Schema"]
+        G2["Finance & Payment Star"]
+        G3["Fulfillment & Delivery Star"]
+        G4["Inventory Snapshot Star"]
+        G5["Procurement & PO Star"]
+        G6["Customer Service Star"]
+    end
+
+    S1 --> INGEST
+    S2 --> INGEST
+    S3 --> INGEST
+    S4 --> INGEST
+    S5 --> INGEST
+    S6 --> INGEST
+    S7 --> INGEST
+    S8 --> INGEST
+
+    INGEST --> G1 & G2 & G3 & G4 & G5 & G6
+```
+> **Key Architecture Takeaway**: Notice that each departmental requirement reflects a distinct business process with differing event triggers and natural grains. Attempting to force all these requirements into one table creates grain confusion and data corruption.
