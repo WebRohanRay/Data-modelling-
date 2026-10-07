@@ -3489,3 +3489,47 @@ source mapping
 That's much stronger.
 
 ---
+
+
+# PART 69 — SOURCE TABLE DOES NOT EQUAL FACT TABLE
+
+For example, source database may contain:
+
+```text
+orders
+order_items
+payments
+shipments
+inventory_transactions
+customers
+products
+```
+
+You may create:
+
+```text
+FactSales
+FactPayment
+FactDelivery
+FactInventorySnapshot
+```
+
+Notice:
+
+```text
+inventory_transactions
+```
+
+doesn't necessarily become:
+
+```text
+FactInventorySnapshot
+```
+
+You may transform many inventory events into a daily snapshot.
+
+That's a huge insight.
+
+> **Fact tables are analytical representations of business processes, not necessarily copies of source tables.**
+
+---
