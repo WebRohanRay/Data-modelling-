@@ -2096,3 +2096,28 @@ DimPromotion
 This is useful when the relationship itself matters.
 
 ---
+
+
+### Bridge Table Architecture for Many-to-Many Relationships
+
+```mermaid
+erDiagram
+    FACT_SALES ||--o{ BRIDGE_ORDER_PROMOTION : "references"
+    BRIDGE_ORDER_PROMOTION }o--|| DIM_PROMOTION : "contains"
+    FACT_SALES {
+        bigint SalesKey PK
+        bigint OrderPromotionGroupKey FK
+        decimal NetSalesAmount
+    }
+    BRIDGE_ORDER_PROMOTION {
+        bigint OrderPromotionGroupKey PK
+        bigint PromotionKey FK
+        decimal AllocationFactor
+    }
+    DIM_PROMOTION {
+        bigint PromotionKey PK
+        string PromotionName
+        string CampaignType
+    }
+```
+> **Weighting Factors in Bridge Tables**: When multiple promotions apply to a single transaction, the bridge table contains an `AllocationFactor` (e.g., 0.50 and 0.50) so that aggregating promotion discounts across categories does not multiply sales totals.
