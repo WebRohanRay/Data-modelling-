@@ -2121,3 +2121,34 @@ erDiagram
     }
 ```
 > **Weighting Factors in Bridge Tables**: When multiple promotions apply to a single transaction, the bridge table contains an `AllocationFactor` (e.g., 0.50 and 0.50) so that aggregating promotion discounts across categories does not multiply sales totals.
+
+
+# PART 34 — ANOTHER MANY-TO-MANY EXAMPLE
+
+Suppose a product can have multiple suppliers.
+
+And a supplier can supply multiple products.
+
+```text
+Product M : M Supplier
+```
+
+Bridge:
+
+```text
+BridgeProductSupplier
+────────────────────────
+product_key
+supplier_key
+supplier_priority
+effective_from
+effective_to
+```
+
+Now you can answer:
+
+> Which supplier supplied this product at a given time?
+
+This is an example of how **business relationships** can require additional modeling structures.
+
+---
