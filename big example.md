@@ -1376,3 +1376,56 @@ new fact
 ```
 
 ---
+
+
+# PART 19 — CUSTOMER SUPPORT
+
+Requirement:
+
+> "Analyze support cases, issue types, resolution time and satisfaction."
+
+Business process:
+
+```text
+Support Ticket
+```
+
+Grain:
+
+# ONE ROW = ONE SUPPORT TICKET
+
+Fact:
+
+```text
+FactSupportTicket
+────────────────────────────────
+ticket_key
+ticket_id
+order_id
+
+customer_key
+product_key
+store_key
+agent_key
+date_key
+issue_key
+
+opened_timestamp
+resolved_timestamp
+resolution_minutes
+satisfaction_score
+reopen_count
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimProduct
+DimStore
+DimAgent
+DimDate
+DimIssue
+```
+
+---
