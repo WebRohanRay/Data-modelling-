@@ -3250,3 +3250,44 @@ The important part:
 Business events and analytical meaning come first.
 
 ---
+
+
+# PART 64 — WHY BUSINESS REQUIREMENTS MATTER SO MUCH
+
+Look at two companies.
+
+### Company A
+
+Only needs:
+
+```text
+daily revenue by store
+```
+
+Could be fairly simple.
+
+### Company B
+
+Needs:
+
+```text
+order-line profitability
+payment attempts
+inventory history
+supplier performance
+delivery SLA
+returns
+customer history
+```
+
+Same industry.
+
+Completely different warehouse design.
+
+Therefore:
+
+> **There is no universal "correct fact table."**
+
+The requirements determine the design.
+
+---
