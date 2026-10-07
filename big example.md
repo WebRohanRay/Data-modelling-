@@ -1811,3 +1811,19 @@ multiple dimension versions
 Facts point to the correct surrogate version.
 
 ---
+
+
+### SCD Type 2 Historical Record Versioning Timeline
+
+```mermaid
+gantt
+    title SCD Type 2 Record Lifespan for Customer #100492
+    dateFormat YYYY-MM-DD
+    section Address: Austin, TX
+    CustomerKey 1042 (IsCurrent=False) :done, 2023-01-01, 2024-05-14
+    section Address: Seattle, WA
+    CustomerKey 2841 (IsCurrent=False) :done, 2024-05-15, 2025-09-30
+    section Address: London, UK
+    CustomerKey 5912 (IsCurrent=True)  :active, 2025-10-01, 2026-10-08
+```
+> **Surrogate Key Invariance**: Sales made to customer #100492 in 2023 permanently point to `CustomerKey 1042`, preserving historical reporting for Texas sales tax, even when the customer later relocates to London.
