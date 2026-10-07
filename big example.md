@@ -2241,3 +2241,15 @@ This is:
 Because the row gets updated as the process passes through milestones.
 
 ---
+
+
+### Accumulating Snapshot Order Lifecycle Milestone Flowchart
+
+```mermaid
+flowchart LR
+    STEP1["1. Order Placed<br/>OrderDateKey"] -->|Processing Lag| STEP2["2. Warehouse Picked<br/>PickDateKey"]
+    STEP2 -->|Packing Lag| STEP3["3. Carrier Handover<br/>ShipDateKey"]
+    STEP3 -->|Transit Lag| STEP4["4. Out for Delivery<br/>OutForDeliveryDateKey"]
+    STEP4 -->|Delivery Lag| STEP5["5. Delivered<br/>DeliveredDateKey"]
+```
+> **Accumulating Snapshot Purpose**: An accumulating snapshot record is updated as the order advances through predefined milestones. This allows direct calculation of end-to-end cycle times and identifying fulfillment bottlenecks.
