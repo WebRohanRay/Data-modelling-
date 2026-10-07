@@ -484,3 +484,69 @@ This is the critical decision.
 Microsoft currently emphasizes that the fact-table grain should be explicitly defined and consistently maintained; its current guidance also notes that storing data at too high a grain can make later detailed analysis impossible. ([Microsoft Learn][1])
 
 ---
+
+
+# PART 6 — BUILD FACTSALES
+
+```text
+FactSales
+────────────────────────────────────
+sales_key
+order_id
+order_line_number
+
+customer_key
+product_key
+store_key
+date_key
+channel_key
+promotion_key
+
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+cost_amount
+profit_amount
+```
+
+Notice the structure.
+
+### Keys
+
+```text
+customer_key
+product_key
+store_key
+date_key
+channel_key
+promotion_key
+```
+
+These connect the fact to dimensions.
+
+### Measures
+
+```text
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+cost_amount
+profit_amount
+```
+
+### Business identifiers
+
+```text
+order_id
+order_line_number
+```
+
+These can remain as degenerate/business identifiers in the fact.
+
+---
