@@ -3561,3 +3561,74 @@ Different purpose.
 That is completely normal.
 
 ---
+
+
+# PART 71 — HOW TO CHECK WHETHER YOUR MODEL MAKES SENSE
+
+After designing the model, test business questions.
+
+For example:
+
+### Question
+
+> Revenue by country and month.
+
+Can we do it?
+
+```text
+FactSales
+→ DimCustomer
+→ DimDate
+```
+
+Yes.
+
+### Question
+
+> Payment failure rate by payment method.
+
+```text
+FactPayment
+→ DimPaymentMethod
+```
+
+Yes.
+
+### Question
+
+> Average delivery time by store.
+
+```text
+FactDelivery
+→ DimStore
+```
+
+Yes.
+
+### Question
+
+> Daily closing inventory by product and store.
+
+```text
+FactInventorySnapshot
+→ DimProduct
+→ DimStore
+→ DimDate
+```
+
+Yes.
+
+### Question
+
+> Historical customer segment at time of sale.
+
+```text
+FactSales
+→ SCD2 DimCustomer
+```
+
+Yes.
+
+Now you've validated the model.
+
+---
