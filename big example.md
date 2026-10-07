@@ -1910,3 +1910,57 @@ Not:
 > "All dimensions = SCD2."
 
 ---
+
+
+# PART 30 — ROLE-PLAYING DIMENSIONS
+
+Consider:
+
+```text
+FactDelivery
+```
+
+It has:
+
+```text
+pickup_date_key
+delivery_date_key
+```
+
+Both use:
+
+```text
+DimDate
+```
+
+One dimension.
+
+Two roles.
+
+```text
+                DimDate
+               /       \
+              /         \
+       Pickup Date   Delivery Date
+               \         /
+                \       /
+               FactDelivery
+```
+
+Another example:
+
+```text
+FactPurchaseOrder
+```
+
+might have:
+
+```text
+order_date_key
+expected_date_key
+receipt_date_key
+```
+
+Again, same date dimension in different roles.
+
+---
