@@ -2755,3 +2755,57 @@ Aggregate → cannot recreate lost detail
 This is why atomic grain is often preserved when practical.
 
 ---
+
+
+# PART 50 — DIMENSION DESIGN
+
+Dimensions aren't just lookup tables.
+
+A good dimension supports:
+
+```text
+filtering
+grouping
+drill-down
+labeling
+historical interpretation
+```
+
+For example:
+
+```text
+DimProduct
+```
+
+might contain:
+
+```text
+department
+category
+subcategory
+brand
+product_type
+```
+
+That creates a hierarchy:
+
+```text
+Department
+   ↓
+Category
+   ↓
+Subcategory
+   ↓
+Product
+```
+
+Now analytics can drill:
+
+```text
+Department
+→ Category
+→ Subcategory
+→ Product
+```
+
+---
