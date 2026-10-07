@@ -1698,3 +1698,35 @@ This isn't necessarily physically one diagram in the database.
 It's the **logical analytical architecture**.
 
 ---
+
+
+### GlobalMart Enterprise Constellation (Multi-Star) Architecture
+
+```mermaid
+graph TB
+    subgraph Enterprise Conformed Dimensions
+        DIM_DATE["DimDate"]
+        DIM_PROD["DimProduct"]
+        DIM_CUST["DimCustomer"]
+        DIM_STORE["DimStore"]
+        DIM_CHAN["DimSalesChannel"]
+        DIM_SUPP["DimSupplier"]
+    end
+
+    subgraph Core Enterprise Fact Tables
+        F_SALES["FactSales (Line Item)"]
+        F_PAY["FactPayment (Attempt)"]
+        F_DELIV["FactDelivery (Package)"]
+        F_INV["FactInventory (Daily Balance)"]
+        F_PO["FactPurchaseOrder (PO Line)"]
+        F_RET["FactReturn (Returned Line)"]
+    end
+
+    F_SALES --- DIM_DATE & DIM_PROD & DIM_CUST & DIM_STORE & DIM_CHAN
+    F_PAY --- DIM_DATE & DIM_CUST & DIM_STORE & DIM_CHAN
+    F_DELIV --- DIM_DATE & DIM_CUST & DIM_STORE
+    F_INV --- DIM_DATE & DIM_PROD & DIM_STORE
+    F_PO --- DIM_DATE & DIM_PROD & DIM_SUPP
+    F_RET --- DIM_DATE & DIM_PROD & DIM_CUST & DIM_STORE
+```
+> **Enterprise Constellation**: The enterprise data warehouse is not a single giant star schema; it is a constellation of multiple stars bound together by shared, conformed dimensions.
