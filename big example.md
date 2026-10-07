@@ -2531,3 +2531,34 @@ If no:
 Split.
 
 ---
+
+
+# PART 44 — HOW TO DECIDE WHAT BECOMES A DIMENSION
+
+Do not say:
+
+> "Anything that's text = dimension."
+
+Wrong.
+
+Instead ask:
+
+> **Does this provide descriptive context that users will filter/group by?**
+
+Examples:
+
+```text
+Customer
+Product
+Store
+Supplier
+Courier
+Promotion
+Date
+Channel
+Payment Method
+```
+
+These are natural dimensions.
+
+---
