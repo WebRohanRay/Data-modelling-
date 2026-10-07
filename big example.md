@@ -3291,3 +3291,52 @@ Therefore:
 The requirements determine the design.
 
 ---
+
+
+# PART 65 — THE DESIGN WORKFLOW I WANT YOU TO MEMORIZE
+
+When a requirement arrives:
+
+```text
+BUSINESS REQUIREMENT
+        ↓
+BUSINESS QUESTIONS
+        ↓
+BUSINESS PROCESS
+        ↓
+EVENT / STATE
+        ↓
+GRAIN
+        ↓
+FACT TYPE
+        ↓
+FACT TABLE
+        ↓
+MEASURES
+        ↓
+DIMENSIONS
+        ↓
+DIMENSION ATTRIBUTES
+        ↓
+SURROGATE KEYS
+        ↓
+SCD / HISTORY
+        ↓
+CONFORMED DIMENSIONS
+        ↓
+STAR SCHEMA
+        ↓
+MULTIPLE STARS
+        ↓
+PHYSICAL STORAGE
+        ↓
+ETL / ELT
+        ↓
+DATA QUALITY
+        ↓
+PERFORMANCE
+        ↓
+CONSUMPTION
+```
+
+---
