@@ -3461,3 +3461,31 @@ flowchart TD
     Q1 -->|"Finite workflow with sequential pipeline milestones"| T3["Accumulating Snapshot Fact Table<br/>(FactOrderFulfillment, FactInsuranceClaimLifecycle)"]
 ```
 > **Fact Table Selection**: Matching the business phenomenon to the correct fact table pattern guarantees that downstream BI queries remain simple, fast, and mathematically accurate.
+
+
+# PART 68 — THE BIGGEST THING TO AVOID
+
+Never start with:
+
+```text
+"Here are my source tables.
+I'll just convert each one into a fact/dimension."
+```
+
+That is **source-driven modeling**.
+
+Instead:
+
+```text
+Business requirements
+        ↓
+business processes
+        ↓
+analytical model
+        ↓
+source mapping
+```
+
+That's much stronger.
+
+---
