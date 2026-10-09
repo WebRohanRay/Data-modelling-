@@ -360,3 +360,480 @@ Start with the business question.
 Microsoft's current fact guidance calls declaring the grain the first and most important fact-table design step. ([Microsoft Learn][3])
 
 ---
+
+
+# PART 7 — Our FlashCart Sales requirement
+
+Business says:
+
+> "We want product-level sales analysis by customer, store, date, promotion, and product."
+
+Now design.
+
+## Step 1 — Business process
+
+```text
+Sales
+```
+
+## Step 2 — Grain
+
+```text
+ONE ROW = ONE PRODUCT LINE IN ONE CUSTOMER ORDER
+```
+
+This is an order-line transaction fact.
+
+## Step 3 — Dimensions
+
+We need:
+
+```text
+DimCustomer
+DimProduct
+DimStore
+DimDate
+DimPromotion
+```
+
+## Step 4 — Measures
+
+We need things like:
+
+```text
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+cost_amount
+profit_amount
+```
+
+## Step 5 — Fact
+
+```text
+FactSales
+────────────────────────────
+sales_key
+order_id
+order_line_number
+
+customer_key
+product_key
+store_key
+date_key
+promotion_key
+
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+cost_amount
+profit_amount
+```
+
+Notice:
+
+We didn't randomly invent `FactSales`.
+
+We derived it.
+
+```text
+Requirement
+     ↓
+Sales process
+     ↓
+Order-line grain
+     ↓
+Dimensions
+     ↓
+Measures
+     ↓
+FactSales
+```
+
+---
+
+# PART 8 — Our dimensions
+
+## DimCustomer
+
+```text
+DimCustomer
+────────────────────────────
+customer_key
+customer_id
+customer_name
+customer_segment
+gender
+country
+state
+city
+signup_date
+acquisition_channel
+```
+
+What is this table doing?
+
+It answers:
+
+```text
+Who bought?
+Which country?
+Which segment?
+Which city?
+Which acquisition channel?
+```
+
+---
+
+## DimProduct
+
+```text
+DimProduct
+────────────────────────────
+product_key
+product_id
+product_name
+brand
+category
+subcategory
+product_type
+unit
+size
+```
+
+It answers:
+
+```text
+What was sold?
+Which brand?
+Which category?
+Which subcategory?
+```
+
+---
+
+## DimStore
+
+```text
+DimStore
+────────────────────────────
+store_key
+store_id
+store_name
+store_type
+city
+state
+country
+region
+opening_date
+```
+
+---
+
+## DimDate
+
+```text
+DimDate
+────────────────────────────
+date_key
+full_date
+day
+week
+month
+month_name
+quarter
+year
+day_name
+is_weekend
+is_holiday
+```
+
+---
+
+## DimPromotion
+
+```text
+DimPromotion
+────────────────────────────
+promotion_key
+promotion_id
+promotion_name
+promotion_type
+campaign
+discount_type
+start_date
+end_date
+```
+
+---
+
+# PART 9 — Our first STAR SCHEMA
+
+Now put it together.
+
+```text
+                         DimCustomer
+                              |
+                              |
+                              |
+DimProduct ------------- FactSales ------------- DimDate
+                              |
+                              |
+                         DimStore
+                              |
+                              |
+                        DimPromotion
+```
+
+That is a **star schema**.
+
+Why is it called a star?
+
+Because:
+
+```text
+                DIM
+                 |
+DIM ----------- FACT ----------- DIM
+                 |
+                DIM
+```
+
+The fact sits in the center.
+
+Microsoft's current Fabric documentation still describes star schema as a recommended analytical modeling approach, and explicitly notes that one warehouse commonly contains multiple fact tables and therefore multiple stars. ([Microsoft Learn][1])
+
+---
+
+# PART 10 — Why fact in center?
+
+Because most analytical questions look like:
+
+> Give me a metric **by some dimensions**.
+
+For example:
+
+```text
+Revenue
+BY
+country
+BY
+product category
+BY
+month
+```
+
+The fact supplies:
+
+```text
+revenue
+```
+
+The dimensions supply:
+
+```text
+country
+product category
+month
+```
+
+So the query logically becomes:
+
+```text
+FactSales
+    ↓
+join/filter
+    ↓
+DimCustomer
+DimProduct
+DimDate
+    ↓
+aggregate
+    ↓
+answer
+```
+
+This is why dimensional modeling is so useful for analytics.
+
+---
+
+# PART 11 — Measures vs dimensions
+
+This distinction must become automatic.
+
+Suppose you have:
+
+```text
+Country
+Product
+Category
+Month
+Revenue
+Quantity
+Profit
+```
+
+Then:
+
+### Dimensions
+
+```text
+Country
+Product
+Category
+Month
+```
+
+### Measures
+
+```text
+Revenue
+Quantity
+Profit
+```
+
+A simple rule:
+
+> **Dimension = something you group/filter by**
+
+> **Measure = something you calculate/summarize**
+
+Example:
+
+```sql
+SUM(revenue)
+GROUP BY country
+```
+
+`revenue` is a measure.
+
+`country` is a dimension attribute.
+
+---
+
+# PART 12 — Additive, semi-additive, non-additive facts
+
+This is where your knowledge starts becoming more advanced.
+
+## Additive
+
+Can be summed across all relevant dimensions.
+
+Examples:
+
+```text
+sales_amount
+quantity
+cost
+discount_amount
+```
+
+For example:
+
+```text
+SUM(sales_amount)
+```
+
+usually makes sense across:
+
+```text
+customer
+product
+store
+date
+```
+
+---
+
+## Semi-additive
+
+Can be summed across some dimensions but not all.
+
+Classic example:
+
+```text
+bank_account_balance
+inventory_balance
+```
+
+You can perhaps sum balances across:
+
+```text
+customers
+```
+
+but summing the same balance across time can be meaningless.
+
+If:
+
+```text
+Monday balance = 100
+Tuesday balance = 120
+Wednesday balance = 90
+```
+
+then:
+
+```text
+100 + 120 + 90
+```
+
+doesn't mean "Wednesday inventory."
+
+Instead you might use:
+
+```text
+LAST_VALUE
+AVERAGE
+MIN
+MAX
+```
+
+depending on the business question.
+
+---
+
+## Non-additive
+
+Cannot meaningfully be summed.
+
+Examples:
+
+```text
+percentage
+ratio
+unit price
+conversion rate
+```
+
+For example:
+
+```text
+conversion_rate
+```
+
+You usually don't:
+
+```text
+SUM(conversion_rate)
+```
+
+You calculate it from appropriate underlying measures.
+
+### Senior-level thought
+
+Don't ask:
+
+> "Is this column numeric—
+
+Ask:
+
+> **"How is this measure mathematically valid to aggregate—**
+
+---
