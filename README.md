@@ -174,3 +174,21 @@ The complete 78-part deep-dive is available in [`big example.md`](./big%20exampl
 * **Advanced Dimensional Patterns (Parts 37–50):** Factless facts, bridge tables, junk dimensions, degenerate dimensions.
 * **Lakehouse & Performance (Parts 51–65):** Gold layer placement, partition strategy, clustering keys, materialized aggregates.
 * **Architecture Mastery (Parts 66–78):** Semantic layers, governance, checking model soundness, architectural rules for senior engineers.
+
+
+---
+
+## ⚡ Quick-Commerce Architecture: FlashCart Deep-Dive
+
+For hyper-growth on-demand delivery models, see our sister masterclass:
+👉 **[FlashCart Quick-Commerce Enterprise Specification (`FLASHCART_CASE_STUDY.md`)](./FLASHCART_CASE_STUDY.md)**
+
+### Case Study Comparison Matrix
+| Architectural Aspect | GlobalMart Case Study | FlashCart Case Study |
+| :--- | :--- | :--- |
+| **Business Domain** | Omnichannel Retail & E-Commerce | On-Demand Quick Commerce |
+| **Operational Scale** | 20,000 physical stores, global distribution | 5,000 dark stores, micro-fulfillment |
+| **Order Latency** | Days to weeks fulfillment | 10–30 minute ultra-fast dispatch |
+| **Logistics Modeling** | Long-haul freight, inter-warehouse transfer | Dynamic courier dispatch, hyper-local routes |
+| **Inventory Grain** | Daily warehouse periodic snapshot | Real-time hourly stock observation |
+| **Lakehouse Tier** | Gold multi-star dimensional mart | Real-time streaming Bronze to Gold marts |
