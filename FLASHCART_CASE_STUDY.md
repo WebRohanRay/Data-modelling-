@@ -3203,3 +3203,2829 @@ Save this:
 ---
 
 # PART 61 — Your "senior Data Engineer" thinking framework
+
+
+Whenever you get a new project, go through this:
+
+```text
+BUSINESS
+   ↓
+What does the business do?
+   ↓
+What are the business processes?
+   ↓
+What questions must be answered?
+   ↓
+What events/states create the data?
+   ↓
+What should one row represent?
+   ↓
+GRAIN
+   ↓
+FACT TYPE
+   ↓
+FACT MEASURES
+   ↓
+DIMENSIONS
+   ↓
+DIMENSION KEYS
+   ↓
+HISTORY / SCD
+   ↓
+CONFORMED DIMENSIONS
+   ↓
+STAR SCHEMA
+   ↓
+PHYSICAL PLATFORM
+   ↓
+PIPELINE
+   ↓
+DATA QUALITY
+   ↓
+PERFORMANCE
+   ↓
+CONSUMPTION
+```
+
+This is the framework I want you to practice until it becomes automatic.
+
+---
+
+# PART 62 — The single most important example
+
+Let's say a manager says:
+
+> **"I want daily inventory by store and product."**
+
+A beginner says:
+
+> "I'll create Inventory table."
+
+A stronger engineer thinks:
+
+```text
+Business Process?
+→ Inventory
+
+Is this an event or state?
+→ State
+
+What is the grain?
+→ Product + Store + Day
+
+Fact type?
+→ Periodic Snapshot
+
+Dimensions?
+→ Product + Store + Date
+
+Measures?
+→ Opening qty
+→ Received qty
+→ Sold qty
+→ Closing qty
+→ Inventory value
+
+Need history?
+→ Snapshot naturally preserves historical state
+
+Schema?
+→ Star
+
+Fact?
+→ FactInventorySnapshot
+```
+
+That is the thinking skill.
+
+---
+
+# PART 63 — The three concepts I want you to become extremely strong at
+
+Of everything above, spend the most time on:
+
+## 1. GRAIN ⭐⭐⭐⭐⭐
+
+You should be able to look at a fact and instantly say:
+
+> One row represents ______.
+
+---
+
+## 2. BUSINESS PROCESS ⭐⭐⭐⭐⭐
+
+Know when two facts represent different processes.
+
+```text
+Sale ≠ Payment ≠ Delivery ≠ Inventory
+```
+
+---
+
+## 3. DIMENSION RELATIONSHIPS ⭐⭐⭐⭐⭐
+
+Know:
+
+```text
+which dimensions describe which facts
+```
+
+and:
+
+```text
+which dimensions should be shared
+```
+
+Those three skills are the foundation of good dimensional design.
+
+---
+
+# PART 64 — Your practical exercise
+
+Now don't just read.
+
+Take this new FlashCart requirement:
+
+> **"The operations team wants to analyze the entire order fulfillment lifecycle. They want to know when an order was created, packed, shipped, and delivered; how long each stage took; which store handled it; which courier delivered it; and whether it was delivered late."**
+
+Available concepts:
+
+```text
+Customer
+Order
+Store
+Courier
+Date
+Product
+Payment
+Shipment
+```
+
+Before looking anything up, design:
+
+```text
+1. Business process:
+_____________________
+
+2. Grain:
+ONE ROW = _____________________
+
+3. Fact name:
+_____________________
+
+4. Fact type:
+Transaction / Periodic Snapshot / Accumulating Snapshot
+
+5. Fact columns:
+_____________________
+
+6. Dimensions:
+_____________________
+
+7. Which dimensions are role-playing?
+_____________________
+
+8. Which dimensions could be conformed?
+_____________________
+
+9. What measures should exist?
+_____________________
+
+10. What should NOT be placed in this fact?
+_____________________
+```
+
+Then draw:
+
+```text
+                 __________
+                     |
+                     |
+___________ ---- ___________ ---- ___________
+                     |
+                 __________
+                     |
+                 __________
+```
+
+This exercise forces you to use:
+
+**business process → grain → fact type → measures → dimensions → relationships**
+
+instead of memorizing definitions.
+
+---
+
+# Your complete learning target from this lesson
+
+You should now aim to understand these as **one connected system**, not separate vocabulary:
+
+```text
+DATA MODELING
+│
+├── Entity
+├── Attribute
+├── Relationship
+├── PK / FK
+├── Normalization
+├── Denormalization
+├── OLTP / OLAP
+│
+└── DIMENSIONAL MODELING
+    │
+    ├── Business process
+    ├── Grain ⭐⭐⭐⭐⭐
+    ├── Fact table
+    │   ├── Transaction
+    │   ├── Periodic snapshot
+    │   ├── Accumulating snapshot
+    │   ├── Factless
+    │   └── Aggregate
+    │
+    ├── Dimension
+    │   ├── Conformed
+    │   ├── Role-playing
+    │   ├── Junk
+    │   ├── Degenerate
+    │   └── Hierarchies
+    │
+    ├── Measures
+    │   ├── Additive
+    │   ├── Semi-additive
+    │   └── Non-additive
+    │
+    ├── Keys
+    │   ├── Natural/business
+    │   └── Surrogate
+    │
+    ├── History
+    │   ├── SCD 0
+    │   ├── SCD 1
+    │   └── SCD 2 ⭐⭐⭐⭐⭐
+    │
+    ├── Star schema ⭐⭐⭐⭐⭐
+    └── Multiple stars / bus matrix
+```
+
+And then:
+
+```text
+Lakehouse architecture
+        ↓
+Bronze
+        ↓
+Silver
+        ↓
+Gold
+        ↓
+Dimensional models / serving models
+```
+
+That connection is exactly what you need to stop thinking like **"I know fact table definitions"** and start thinking like **"I can design an analytical data system."**
+
+The next level after this is **not another theory chapter**. It is taking the FlashCart requirements and designing the warehouse **from scratch, one business process at a time**, while I challenge your grain, fact choice, dimensions, SCD strategy, and schema decisions like a real design review.
+
+[1]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-overview'rk=article-ssr-frontend-pulse_little-text-block&utm_source=chatgpt.com "Dimensional Modeling - Microsoft Fabric | Microsoft Learn"
+[2]: https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/business-process/?utm_source=chatgpt.com "Business Processes | Kimball Dimensional Modeling Techniques"
+[3]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-fact-tables?utm_source=chatgpt.com "Modeling Fact Tables in Warehouse - Microsoft Fabric | Microsoft Learn"
+[4]: https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables?utm_source=chatgpt.com "Modeling Dimension Tables in Warehouse - Microsoft Fabric | Microsoft Learn"
+[5]: https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/enterprise-data-warehouse-bus-matrix/?utm_source=chatgpt.com "Enterprise Data Warehouse Bus Matrix | Kimball Dimensional Modeling Techniques"
+[6]: https://docs.databricks.com/gcp/en/ldp/best-practices/dimensional-modeling?utm_source=chatgpt.com "Dimensional modeling in Lakeflow pipelines | Databricks on Google Cloud"
+[7]: https://docs.databricks.com/aws/en/lakehouse/medallion?utm_source=chatgpt.com "What is the medallion lakehouse architecture? | Databricks on AWS"
+**Yes — absolutely.** In real Data Engineering and Data Warehousing, **requirements come first**.
+
+You should not start by creating:
+
+> `FactSales`, `DimCustomer`, `DimProduct`
+
+just because you have some source tables.
+
+The proper flow is:
+
+```text
+BUSINESS REQUIREMENTS
+        ↓
+BUSINESS PROCESSES
+        ↓
+BUSINESS QUESTIONS / ANALYTICAL NEEDS
+        ↓
+GRAIN
+        ↓
+FACT TABLES
+        ↓
+DIMENSIONS
+        ↓
+STAR SCHEMA
+        ↓
+ETL / ELT
+        ↓
+DATA QUALITY
+        ↓
+PERFORMANCE / SERVING
+```
+
+### Why requirements come first
+
+Imagine the business tells you:
+
+> "We want to know daily inventory levels for every product in every store."
+
+From that requirement, you discover:
+
+```text
+Business process
+→ Inventory
+
+What is being measured?
+→ Inventory state
+
+Grain
+→ One product + one store + one day
+
+Fact type
+→ Periodic snapshot
+
+Fact
+→ FactInventorySnapshot
+
+Dimensions
+→ DimProduct
+→ DimStore
+→ DimDate
+```
+
+But suppose the requirement instead says:
+
+> "We want to analyze every payment attempt and determine why payments fail."
+
+Now:
+
+```text
+Business process
+→ Payment
+
+Grain
+→ One payment attempt
+
+Fact
+→ FactPayment
+
+Dimensions
+→ Customer
+→ Payment Method
+→ Date
+→ Store
+```
+
+Completely different model.
+
+### The high-level idea
+
+**Requirements tell you what the business needs.**
+
+**Data modeling converts those needs into a structure.**
+
+**Data Engineering builds the pipelines that populate that structure.**
+
+So when designing a warehouse, your first question should always be:
+
+> **"What does the business need to know or analyze—**
+
+Not:
+
+> "What tables should I create—
+
+That is one of the biggest mindset differences between a beginner and a strong Data Engineer.
+
+For our FlashCart exercise, we should therefore start **from a realistic requirements document**, identify all the business processes and analytical questions, and only then design the facts, dimensions, grains, and star schemas.
+Yes. The part you're struggling with is **not understanding fact tables themselves**. It is the step **between business requirements and deciding what tables to create**.
+
+So let's forget the terminology for a moment.
+
+I want you to learn one repeatable thought process:
+
+```text
+BUSINESS REQUIREMENT
+        ↓
+1. What is the business process?
+        ↓
+2. What exactly needs to be measured?
+        ↓
+3. What is happening / what state is being captured?
+        ↓
+4. What should ONE ROW represent?
+        ↓
+5. What FACT table represents that?
+        ↓
+6. What DIMENSIONS describe that fact?
+        ↓
+7. What MEASURES belong at that grain?
+        ↓
+8. What history is needed?
+        ↓
+9. Can another fact share these dimensions?
+        ↓
+10. Draw the STAR SCHEMA
+```
+
+This is the skill you need.
+
+---
+
+# The biggest mindset change
+
+When you receive requirements, **do not think about tables first**.
+
+For example, the business says:
+
+> "We want to know how much money we make from products."
+
+Don't immediately think:
+
+```text
+FactSales
+DimProduct
+DimCustomer
+```
+
+First translate the sentence into a business event:
+
+> **A product is sold.**
+
+Then ask:
+
+> At what level do we want to know that sale?
+
+Maybe:
+
+```text
+one order
+```
+
+or:
+
+```text
+one product line inside an order
+```
+
+That decision is the **grain**.
+
+Then the fact table almost designs itself.
+
+---
+
+# The master design method
+
+Whenever you get requirements, do this on paper.
+
+## Step 1 — Highlight business nouns
+
+Requirement:
+
+> "Management wants to analyze sales by customer, product, store and month."
+
+Nouns:
+
+```text
+sales
+customer
+product
+store
+month
+```
+
+But don't immediately make all of them dimensions.
+
+---
+
+## Step 2 — Identify the business PROCESS
+
+Ask:
+
+> **What is the business actually doing?**
+
+Here:
+
+```text
+Sales
+```
+
+---
+
+## Step 3 — Find the EVENT or STATE
+
+Ask:
+
+> **What happened?**
+
+Here:
+
+```text
+A product was sold.
+```
+
+---
+
+## Step 4 — Define the GRAIN
+
+Ask:
+
+> **What should one row mean?**
+
+Maybe:
+
+```text
+ONE ROW = ONE PRODUCT LINE IN ONE ORDER
+```
+
+Now the fact has a precise meaning.
+
+---
+
+## Step 5 — Identify dimensions
+
+Ask:
+
+> Who?
+
+```text
+Customer
+```
+
+> What?
+
+```text
+Product
+```
+
+> Where?
+
+```text
+Store
+```
+
+> When?
+
+```text
+Date
+```
+
+> Under what promotion?
+
+```text
+Promotion
+```
+
+---
+
+## Step 6 — Identify measures
+
+Ask:
+
+> **What numbers are produced by this event at this grain?**
+
+For an order line:
+
+```text
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+cost_amount
+profit_amount
+```
+
+---
+
+## Step 7 — Check whether everything has the same grain
+
+If you have:
+
+```text
+sales = order line
+payment = payment attempt
+delivery = delivery
+```
+
+STOP.
+
+Do not put all three into one fact.
+
+Different grain → different facts.
+
+---
+
+# The easiest rule for choosing FACT tables
+
+Remember this:
+
+> **One business process + one grain = one logical fact table.**
+
+Not:
+
+> One business question = one fact table.
+
+And not:
+
+> One source table = one fact table.
+
+---
+
+# Let's do 10 BIG examples
+
+I will deliberately make them different so you learn the reasoning rather than memorizing `FactSales`.
+
+---
+
+# EXAMPLE 1 — E-COMMERCE SALES
+
+Company: **MegaShop**
+
+Business requirements:
+
+> Management wants to analyze revenue by product, customer, store, promotion, and date.
+
+> They also need quantity sold, discounts, taxes, cost, and profit.
+
+---
+
+## THINK 1 — What business process?
+
+```text
+Sales
+```
+
+---
+
+## THINK 2 — What happened?
+
+A product was sold as part of an order.
+
+---
+
+## THINK 3 — What detail does business need?
+
+Product-level sales.
+
+Therefore:
+
+```text
+GRAIN
+ONE ROW = ONE PRODUCT LINE IN ONE ORDER
+```
+
+This is the critical decision.
+
+---
+
+## THINK 4 — What is the fact?
+
+```text
+FactSales
+```
+
+Columns:
+
+```text
+FactSales
+─────────────────────────────
+sales_key
+order_id
+order_line_number
+
+customer_key
+product_key
+store_key
+date_key
+promotion_key
+
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+cost_amount
+profit_amount
+```
+
+---
+
+## THINK 5 — Dimensions
+
+```text
+DimCustomer
+────────────────────
+customer_key
+customer_id
+customer_name
+customer_segment
+country
+state
+city
+signup_date
+acquisition_channel
+```
+
+```text
+DimProduct
+────────────────────
+product_key
+product_id
+product_name
+brand
+category
+subcategory
+product_type
+```
+
+```text
+DimStore
+────────────────────
+store_key
+store_id
+store_name
+store_type
+city
+state
+country
+region
+```
+
+```text
+DimDate
+────────────────────
+date_key
+full_date
+day
+week
+month
+quarter
+year
+day_name
+is_weekend
+is_holiday
+```
+
+```text
+DimPromotion
+────────────────────
+promotion_key
+promotion_id
+promotion_name
+promotion_type
+campaign
+discount_type
+```
+
+---
+
+## STAR
+
+```text
+                         DimCustomer
+                              |
+                              |
+DimProduct ------------- FactSales ------------- DimDate
+                              |
+                              |
+                          DimStore
+                              |
+                              |
+                       DimPromotion
+```
+
+---
+
+## Why this design?
+
+Because the business wants:
+
+```text
+Revenue by Product
+Revenue by Customer
+Revenue by Store
+Revenue by Month
+Revenue by Promotion
+```
+
+One fact plus dimensions can answer all of them.
+
+You do **NOT** create:
+
+```text
+FactSalesByProduct
+FactSalesByCustomer
+FactSalesByStore
+FactSalesByMonth
+```
+
+That's beginner thinking.
+
+---
+
+## What would make you create another fact?
+
+Suppose they now say:
+
+> "We need to analyze payment attempts."
+
+That's another process.
+
+So don't add payment columns to FactSales.
+
+Create:
+
+```text
+FactPayment
+```
+
+We'll see that next.
+
+---
+
+# EXAMPLE 2 — PAYMENT SYSTEM
+
+Business requirements:
+
+> Finance wants to know how many payment attempts were made, which succeeded, which failed, which payment method was used, and the amount collected.
+
+---
+
+## THINK 1 — Process
+
+```text
+Payment
+```
+
+Not Sales.
+
+---
+
+## THINK 2 — What happened?
+
+A payment attempt occurred.
+
+Maybe:
+
+```text
+Attempt 1 → failed
+Attempt 2 → failed
+Attempt 3 → successful
+```
+
+---
+
+## THINK 3 — Grain
+
+```text
+ONE ROW = ONE PAYMENT ATTEMPT
+```
+
+This is the crucial decision.
+
+---
+
+## THINK 4 — Fact
+
+```text
+FactPayment
+────────────────────────────
+payment_key
+payment_id
+order_id
+
+customer_key
+store_key
+date_key
+payment_method_key
+
+attempt_number
+payment_status
+payment_amount
+processing_fee
+```
+
+---
+
+## Dimensions
+
+```text
+DimCustomer
+DimStore
+DimDate
+DimPaymentMethod
+```
+
+Payment method:
+
+```text
+DimPaymentMethod
+────────────────────────
+payment_method_key
+payment_method_id
+payment_method_name
+provider
+payment_type
+card_network
+```
+
+---
+
+## STAR
+
+```text
+                    DimCustomer
+                         |
+                         |
+DimPaymentMethod --- FactPayment --- DimDate
+                         |
+                         |
+                      DimStore
+```
+
+---
+
+## Why not put payment inside FactSales?
+
+Because:
+
+```text
+FactSales grain
+= one order line
+
+FactPayment grain
+= one payment attempt
+```
+
+They're not the same.
+
+Suppose:
+
+```text
+1 order
+4 product lines
+3 payment attempts
+```
+
+Combining them can logically produce:
+
+```text
+4 × 3 = 12
+```
+
+combinations.
+
+You have created artificial duplication.
+
+That can destroy your numbers.
+
+### Remember
+
+> **Never mix grains just because two things belong to the same order.**
+
+---
+
+# EXAMPLE 3 — DELIVERY / LOGISTICS
+
+Business requirements:
+
+> Operations wants to measure delivery speed, lateness, distance, delivery fee, courier performance, and delivery status.
+
+---
+
+## Process
+
+```text
+Delivery
+```
+
+---
+
+## What happened?
+
+A delivery occurred.
+
+---
+
+## Grain
+
+```text
+ONE ROW = ONE DELIVERY
+```
+
+---
+
+## Fact
+
+```text
+FactDelivery
+──────────────────────────────
+delivery_key
+order_id
+
+customer_key
+store_key
+courier_key
+
+pickup_date_key
+delivery_date_key
+
+delivery_status
+promised_minutes
+actual_minutes
+distance_km
+delivery_fee
+late_minutes
+```
+
+---
+
+## Dimensions
+
+```text
+DimCustomer
+DimStore
+DimCourier
+DimDate
+```
+
+Courier:
+
+```text
+DimCourier
+────────────────────
+courier_key
+courier_id
+courier_name
+courier_type
+vehicle_type
+home_city
+```
+
+---
+
+# Now something new appears
+
+We have:
+
+```text
+pickup_date_key
+delivery_date_key
+```
+
+Both refer to the same:
+
+```text
+DimDate
+```
+
+This is a:
+
+# ROLE-PLAYING DIMENSION
+
+```text
+                      DimDate
+                     /       \
+                    /         \
+           pickup_date     delivery_date
+                  \           /
+                   \         /
+                  FactDelivery
+```
+
+Same dimension.
+
+Different role.
+
+---
+
+# EXAMPLE 4 — INVENTORY
+
+Now things get more interesting.
+
+Requirement:
+
+> "Every day, management wants to know the inventory of every product in every store, how much was received, sold, returned, damaged, and whether the product was out of stock."
+
+---
+
+## Process
+
+```text
+Inventory
+```
+
+---
+
+## Event or state?
+
+This is mainly **state**.
+
+We're asking:
+
+> What was the inventory state at a particular point in time?
+
+---
+
+## Grain
+
+```text
+ONE ROW = ONE PRODUCT + ONE STORE + ONE DAY
+```
+
+This is very different from sales.
+
+---
+
+## Fact type
+
+```text
+Periodic Snapshot
+```
+
+---
+
+## Fact
+
+```text
+FactInventorySnapshot
+───────────────────────────────
+date_key
+product_key
+store_key
+
+opening_quantity
+received_quantity
+sold_quantity
+returned_quantity
+damaged_quantity
+closing_quantity
+inventory_value
+out_of_stock_flag
+```
+
+---
+
+## Dimensions
+
+```text
+DimProduct
+DimStore
+DimDate
+```
+
+---
+
+## STAR
+
+```text
+                    DimProduct
+                        |
+                        |
+DimStore ------ FactInventorySnapshot ------ DimDate
+```
+
+---
+
+# Why not use FactSales?
+
+Because:
+
+```text
+FactSales
+= an event
+
+FactInventorySnapshot
+= state
+```
+
+And the grain is different:
+
+```text
+sales
+→ one order line
+
+inventory
+→ one product + one store + one day
+```
+
+That one distinction should become automatic in your head.
+
+---
+
+# EXAMPLE 5 — RETURNS
+
+Requirement:
+
+> "Management wants to know which products are returned, why they are returned, by which customer, from which store, and the amount refunded."
+
+---
+
+## Process
+
+```text
+Returns
+```
+
+---
+
+## Grain
+
+```text
+ONE ROW = ONE RETURNED ORDER LINE
+```
+
+---
+
+## Fact
+
+```text
+FactReturn
+────────────────────────────
+return_key
+order_id
+order_line_number
+
+customer_key
+product_key
+store_key
+return_date_key
+return_reason_key
+
+quantity_returned
+refund_amount
+restocking_fee
+```
+
+---
+
+## Dimensions
+
+```text
+DimCustomer
+DimProduct
+DimStore
+DimDate
+DimReturnReason
+```
+
+Return reason:
+
+```text
+DimReturnReason
+────────────────────
+return_reason_key
+reason_code
+reason_name
+reason_category
+```
+
+---
+
+## STAR
+
+```text
+                         DimCustomer
+                              |
+                              |
+DimProduct -------------- FactReturn -------------- DimDate
+                              |
+                              |
+                          DimStore
+                              |
+                              |
+                       DimReturnReason
+```
+
+---
+
+# Look carefully
+
+Now we have:
+
+```text
+FactSales
+FactPayment
+FactDelivery
+FactInventorySnapshot
+FactReturn
+```
+
+Are we creating too many fact tables?
+
+No.
+
+Why?
+
+Because each represents a **different business process/grain**.
+
+---
+
+# EXAMPLE 6 — SUBSCRIPTION COMPANY
+
+Now leave e-commerce.
+
+Company: **Netflix-style streaming platform**
+
+Requirements:
+
+> Business wants to analyze subscriptions, monthly recurring revenue, cancellations, upgrades, downgrades, and customer activity.
+
+Here beginners often make one giant fact.
+
+Don't.
+
+---
+
+## Process 1 — Subscription events
+
+The requirement:
+
+> Track subscription changes.
+
+Events:
+
+```text
+Subscribe
+Upgrade
+Downgrade
+Cancel
+Reactivate
+```
+
+Grain:
+
+```text
+ONE ROW = ONE SUBSCRIPTION CHANGE EVENT
+```
+
+Fact:
+
+```text
+FactSubscriptionEvent
+──────────────────────────────
+subscription_event_key
+customer_key
+plan_key
+date_key
+event_type_key
+subscription_id
+
+event_effective_date_key
+old_plan_key
+new_plan_key
+monthly_price
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimPlan
+DimDate
+DimSubscriptionEventType
+```
+
+---
+
+## Process 2 — Daily subscription state
+
+Requirement:
+
+> "How many active subscribers did we have each day—
+
+That's not necessarily the same fact.
+
+Could be:
+
+```text
+FactSubscriberSnapshot
+────────────────────────────
+date_key
+customer_key
+plan_key
+subscription_status
+monthly_recurring_revenue
+```
+
+Grain:
+
+```text
+ONE ROW = ONE CUSTOMER + ONE PLAN + ONE DAY
+```
+
+This is a snapshot.
+
+---
+
+## Why two facts?
+
+Because:
+
+```text
+FactSubscriptionEvent
+= events
+
+FactSubscriberSnapshot
+= daily state
+```
+
+Different questions.
+
+Different grain.
+
+Different facts.
+
+This is exactly the kind of reasoning you want.
+
+---
+
+# EXAMPLE 7 — BANKING
+
+This one teaches another important concept.
+
+Requirement:
+
+> "Bank wants to analyze customer transactions, account balances, branches, transaction types, and daily account balances."
+
+---
+
+## Fact 1 — Transactions
+
+Process:
+
+```text
+Account Transaction
+```
+
+Grain:
+
+```text
+ONE ROW = ONE ACCOUNT TRANSACTION
+```
+
+```text
+FactAccountTransaction
+────────────────────────────
+transaction_key
+transaction_id
+account_key
+customer_key
+branch_key
+transaction_type_key
+date_key
+
+transaction_amount
+transaction_fee
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimAccount
+DimBranch
+DimTransactionType
+DimDate
+```
+
+---
+
+## Fact 2 — Account balance
+
+Requirement:
+
+> "What was each account's closing balance every day—
+
+That is a state.
+
+Grain:
+
+```text
+ONE ROW = ONE ACCOUNT + ONE DAY
+```
+
+Fact:
+
+```text
+FactAccountDailyBalance
+────────────────────────────
+date_key
+account_key
+customer_key
+branch_key
+
+opening_balance
+closing_balance
+average_balance
+interest_amount
+```
+
+---
+
+## Critical insight
+
+You should NOT say:
+
+> "Both are about money, so one fact."
+
+Wrong.
+
+Money is not the deciding factor.
+
+**Business process + grain is the deciding factor.**
+
+---
+
+# EXAMPLE 8 — HOSPITAL
+
+Now something non-commercial.
+
+Requirements:
+
+> Hospital wants to analyze patient visits, diagnoses, procedures, doctors, departments and billing.
+
+---
+
+## Process 1 — Visits
+
+Grain:
+
+```text
+ONE ROW = ONE PATIENT VISIT
+```
+
+```text
+FactPatientVisit
+────────────────────────
+visit_key
+patient_key
+doctor_key
+department_key
+date_key
+visit_type_key
+
+wait_minutes
+visit_duration_minutes
+```
+
+---
+
+## Process 2 — Procedures
+
+Requirement:
+
+> "Analyze every procedure performed."
+
+Grain:
+
+```text
+ONE ROW = ONE PROCEDURE PERFORMED DURING A VISIT
+```
+
+```text
+FactProcedure
+────────────────────
+procedure_key
+visit_key
+patient_key
+doctor_key
+department_key
+date_key
+procedure_type_key
+
+procedure_cost
+procedure_duration_minutes
+```
+
+Notice:
+
+```text
+Visit
+```
+
+and:
+
+```text
+Procedure
+```
+
+are related.
+
+But they have different grains.
+
+So don't blindly merge them.
+
+---
+
+## Process 3 — Billing
+
+```text
+ONE ROW = ONE BILLING LINE
+```
+
+```text
+FactBilling
+────────────────────
+billing_key
+patient_key
+visit_key
+date_key
+service_key
+insurance_key
+
+gross_amount
+insurance_amount
+patient_amount
+discount_amount
+```
+
+Now you've learned something huge:
+
+> **One real-world business workflow can produce several fact tables.**
+
+---
+
+# EXAMPLE 9 — UNIVERSITY / EDUCATION
+
+Requirements:
+
+> University wants to analyze course enrollment, attendance, exam performance and student payments.
+
+Four different processes.
+
+---
+
+## FactEnrollment
+
+Grain:
+
+```text
+ONE ROW = ONE STUDENT ENROLLED IN ONE COURSE
+```
+
+```text
+FactEnrollment
+────────────────────────
+student_key
+course_key
+semester_key
+department_key
+enrollment_date_key
+
+enrollment_status
+```
+
+---
+
+## FactAttendance
+
+Grain:
+
+```text
+ONE ROW = ONE STUDENT + ONE CLASS SESSION
+```
+
+```text
+FactAttendance
+────────────────────────
+student_key
+course_key
+instructor_key
+date_key
+class_session_key
+
+attendance_status
+```
+
+---
+
+## FactExamResult
+
+Grain:
+
+```text
+ONE ROW = ONE STUDENT + ONE EXAM
+```
+
+```text
+FactExamResult
+────────────────────────
+student_key
+course_key
+exam_key
+date_key
+
+marks
+percentage
+grade
+```
+
+---
+
+## FactStudentPayment
+
+Grain:
+
+```text
+ONE ROW = ONE PAYMENT TRANSACTION
+```
+
+```text
+FactStudentPayment
+────────────────────────
+payment_key
+student_key
+date_key
+payment_type_key
+
+amount
+late_fee
+discount
+```
+
+---
+
+# Look at the common dimensions
+
+```text
+DimStudent
+DimCourse
+DimDate
+DimDepartment
+```
+
+These can become **conformed dimensions** where appropriate.
+
+So many stars can coexist:
+
+```text
+                  DimStudent
+                 /     |      \
+                ↓      ↓       ↓
+        FactEnrollment  FactExamResult  FactPayment
+                |
+                ↓
+         FactAttendance
+```
+
+---
+
+# EXAMPLE 10 — FOOD DELIVERY PLATFORM
+
+Now let's do a large one, because this combines almost everything.
+
+Company:
+
+# **FoodGo**
+
+It has:
+
+```text
+Customers
+Restaurants
+Menu Items
+Orders
+Payments
+Deliveries
+Drivers
+Promotions
+Reviews
+Inventory
+```
+
+Business requirements:
+
+### Sales team
+
+> Analyze food orders by restaurant, customer, menu item and date.
+
+### Finance
+
+> Analyze payment attempts and collected money.
+
+### Operations
+
+> Analyze delivery speed and late orders.
+
+### Restaurant team
+
+> Analyze item popularity.
+
+### Marketing
+
+> Analyze campaign performance.
+
+### Customer experience
+
+> Analyze ratings and reviews.
+
+### Restaurant management
+
+> Analyze inventory usage.
+
+Now let's design it like an engineer.
+
+---
+
+# Requirement 1 — Orders
+
+Question:
+
+> How many food items were ordered and how much revenue was generated?
+
+Process:
+
+```text
+Order / Sales
+```
+
+Grain:
+
+```text
+ONE ROW = ONE MENU ITEM IN ONE ORDER
+```
+
+Fact:
+
+```text
+FactOrderItem
+────────────────────────────
+order_item_key
+order_id
+
+customer_key
+restaurant_key
+menu_item_key
+order_date_key
+promotion_key
+
+quantity
+unit_price
+gross_amount
+discount_amount
+tax_amount
+net_amount
+```
+
+Dimensions:
+
+```text
+DimCustomer
+DimRestaurant
+DimMenuItem
+DimDate
+DimPromotion
+```
+
+---
+
+# Requirement 2 — Payment
+
+Question:
+
+> Which payment attempts succeeded or failed?
+
+Process:
+
+```text
+Payment
+```
+
+Grain:
+
+```text
+ONE ROW = ONE PAYMENT ATTEMPT
+```
+
+Fact:
+
+```text
+FactPayment
+────────────────────────
+payment_key
+payment_id
+order_id
+customer_key
+date_key
+payment_method_key
+
+attempt_number
+payment_status
+payment_amount
+processing_fee
+```
+
+---
+
+# Requirement 3 — Delivery
+
+Question:
+
+> How long did each delivery take?
+
+Process:
+
+```text
+Delivery
+```
+
+Grain:
+
+```text
+ONE ROW = ONE DELIVERY
+```
+
+Fact:
+
+```text
+FactDelivery
+──────────────────────────
+delivery_key
+order_id
+customer_key
+restaurant_key
+courier_key
+
+pickup_date_key
+delivery_date_key
+
+promised_minutes
+actual_minutes
+late_minutes
+distance_km
+delivery_fee
+delivery_status
+```
+
+---
+
+# Requirement 4 — Reviews
+
+Question:
+
+> How do customers rate restaurants and menu items?
+
+Process:
+
+```text
+Review
+```
+
+Grain:
+
+```text
+ONE ROW = ONE CUSTOMER REVIEW
+```
+
+Fact:
+
+```text
+FactReview
+────────────────────────
+review_key
+customer_key
+restaurant_key
+menu_item_key
+order_key
+date_key
+
+rating
+review_sentiment_score
+```
+
+---
+
+# Requirement 5 — Inventory
+
+Question:
+
+> How many ingredients/items were available at each restaurant each day?
+
+Process:
+
+```text
+Inventory
+```
+
+Grain:
+
+```text
+ONE ROW = ONE INVENTORY ITEM + RESTAURANT + DAY
+```
+
+Fact:
+
+```text
+FactRestaurantInventorySnapshot
+──────────────────────────────────
+date_key
+restaurant_key
+inventory_item_key
+
+opening_quantity
+received_quantity
+used_quantity
+wasted_quantity
+closing_quantity
+stock_value
+out_of_stock_flag
+```
+
+Snapshot fact.
+
+---
+
+# Requirement 6 — Marketing
+
+Question:
+
+> How many orders and how much revenue came from each promotion?
+
+This is where you need to think carefully.
+
+Do we need:
+
+```text
+FactPromotionPerformance
+```
+
+immediately?
+
+Maybe not.
+
+If the promotion is already attached to the order-item sales fact:
+
+```text
+FactOrderItem
+    ↓
+DimPromotion
+```
+
+then you can calculate:
+
+```text
+Revenue by Promotion
+Orders by Promotion
+Discount by Promotion
+```
+
+from the sales fact.
+
+**No new fact required.**
+
+That is an extremely important modeling decision.
+
+---
+
+# Requirement 7 — Customer behavior
+
+Suppose Marketing says:
+
+> "We need daily active customers."
+
+This is different.
+
+You might model:
+
+```text
+FactCustomerDailyActivity
+────────────────────────────
+date_key
+customer_key
+
+orders_count
+items_count
+revenue_amount
+is_active
+```
+
+Grain:
+
+```text
+ONE ROW = ONE CUSTOMER + ONE DAY
+```
+
+This can be useful as an aggregate/behavioral fact depending on requirements and architecture.
+
+---
+
+# Now the FOODGO enterprise model
+
+```text
+                           DimCustomer
+                         /     |      \
+                        /      |       \
+                       ↓       ↓        ↓
+                FactOrderItem FactPayment FactReview
+                    │             │
+                    │             │
+               DimMenuItem    DimPaymentMethod
+                    │
+                    │
+              DimRestaurant
+                    │
+             ┌──────┼───────────────┐
+             ↓      ↓               ↓
+         FactDelivery       FactInventorySnapshot
+             │                    │
+             │                    │
+         DimCourier         DimInventoryItem
+             │                    │
+             └────────┬───────────┘
+                      ↓
+                   DimDate
+```
+
+Now you should start seeing the pattern.
+
+---
+
+# The question you were asking:
+
+# "After I know the business requirements, what exactly do I THINK about—
+
+Here is the answer.
+
+## Question 1
+
+# WHAT BUSINESS PROCESS?
+
+Examples:
+
+```text
+Sales
+Payment
+Delivery
+Inventory
+Returns
+Attendance
+Enrollment
+```
+
+---
+
+## Question 2
+
+# WHAT IS THE BUSINESS EVENT OR STATE?
+
+Examples:
+
+```text
+Sale happened
+Payment attempted
+Delivery completed
+Inventory observed
+Student attended
+Account balance observed
+```
+
+---
+
+## Question 3
+
+# WHAT LEVEL OF DETAIL DOES THE BUSINESS NEED?
+
+This is where you decide grain.
+
+Examples:
+
+```text
+one order
+one order line
+one payment attempt
+one delivery
+one product-store-day
+one customer-day
+```
+
+---
+
+# Question 4
+
+# CAN I SAY "ONE ROW = ______"?
+
+This should become your automatic test.
+
+If you say:
+
+```text
+ONE ROW = ?
+```
+
+and you're not sure:
+
+# STOP.
+
+You aren't ready to create the fact yet.
+
+---
+
+# Question 5
+
+# WHAT MEASURES EXIST AT THAT GRAIN?
+
+Example:
+
+```text
+Order-line grain:
+quantity
+price
+discount
+tax
+revenue
+profit
+```
+
+But:
+
+```text
+Payment-attempt grain:
+payment_amount
+fee
+```
+
+And:
+
+```text
+Inventory-day grain:
+opening_qty
+closing_qty
+received_qty
+```
+
+The measures change with the grain.
+
+---
+
+# Question 6
+
+# WHAT DESCRIBES THE EVENT?
+
+Ask:
+
+```text
+WHO?
+WHAT?
+WHEN?
+WHERE?
+WHICH CATEGORY?
+WHICH CAMPAIGN?
+WHICH METHOD?
+```
+
+These lead you toward dimensions.
+
+For a sale:
+
+```text
+WHO → Customer
+WHAT → Product
+WHEN → Date
+WHERE → Store
+WHICH CAMPAIGN → Promotion
+```
+
+---
+
+# Question 7
+
+# DO MULTIPLE FACTS NEED THE SAME DIMENSION?
+
+Suppose:
+
+```text
+FactSales → DimCustomer
+FactPayment → DimCustomer
+FactReturn → DimCustomer
+```
+
+Then:
+
+```text
+DimCustomer
+```
+
+can potentially be a **conformed dimension**.
+
+---
+
+# Question 8
+
+# DOES THE DIMENSION CHANGE?
+
+Suppose Customer changes:
+
+```text
+Segment:
+Silver → Gold
+```
+
+Ask:
+
+> Do we need historical reporting?
+
+If yes:
+
+```text
+SCD Type 2
+```
+
+If no:
+
+```text
+SCD Type 1
+```
+
+---
+
+# Question 9
+
+# IS THIS EVENT OR STATE?
+
+This determines fact type.
+
+```text
+Order happened
+→ Transaction Fact
+```
+
+```text
+Payment happened
+→ Transaction Fact
+```
+
+```text
+Inventory at end of day
+→ Periodic Snapshot
+```
+
+```text
+Order lifecycle
+Created → Packed → Shipped → Delivered
+→ Accumulating Snapshot
+```
+
+---
+
+# Question 10
+
+# CAN THE SAME FACT ANSWER THE QUESTION?
+
+Very important.
+
+Suppose:
+
+> Sales by country.
+
+And:
+
+> Sales by product.
+
+And:
+
+> Sales by month.
+
+All from:
+
+```text
+FactSales
++
+DimCustomer
++
+DimProduct
++
+DimDate
+```
+
+No extra fact.
+
+---
+
+# When should I create another fact?
+
+Use this test:
+
+```text
+                SHOULD I CREATE
+                 ANOTHER FACT?
+                       │
+                       ↓
+              Different business
+                  process?
+                 /        \
+               YES         NO
+                ↓           ↓
+             New fact    Different grain?
+                           /       \
+                         YES        NO
+                          ↓          ↓
+                       New fact   Probably same fact
+```
+
+That simple decision tree will prevent many mistakes.
+
+---
+
+# Here is the REALLY important distinction
+
+You might have:
+
+```text
+Revenue by Customer
+Revenue by Product
+Revenue by Country
+Revenue by Store
+Revenue by Month
+```
+
+These are **different questions**.
+
+But they can all use:
+
+```text
+FactSales
+```
+
+because the underlying event is the same and the grain is the same.
+
+---
+
+But:
+
+```text
+Revenue
+Payment success rate
+Delivery time
+Inventory balance
+Return rate
+```
+
+are different business processes/states.
+
+They may need:
+
+```text
+FactSales
+FactPayment
+FactDelivery
+FactInventorySnapshot
+FactReturn
+```
+
+---
+
+# Think about a FACT as a camera
+
+This is a useful mental trick.
+
+Imagine every fact table is a **camera recording one type of business activity at one level of detail**.
+
+### FactSales camera
+
+Records:
+
+> Every product-line sale.
+
+### FactPayment camera
+
+Records:
+
+> Every payment attempt.
+
+### FactDelivery camera
+
+Records:
+
+> Every delivery.
+
+### FactInventory camera
+
+Records:
+
+> Inventory state every day.
+
+You don't point one camera at everything and expect the data to stay logically clean.
+
+---
+
+# Dimensions are the lenses/context
+
+A fact says:
+
+```text
+Something happened.
+```
+
+Dimensions tell you:
+
+```text
+Who?
+What?
+When?
+Where?
+Which type?
+Which category?
+```
+
+That's why a fact is surrounded by dimensions.
+
+---
+
+# The complete design process
+
+When you become very comfortable, your workflow should look like this:
+
+```text
+                 BUSINESS REQUIREMENTS
+                          ↓
+                  Business Questions
+                          ↓
+                  Business Processes
+                          ↓
+                    Events / States
+                          ↓
+                       GRAIN
+                          ↓
+               ┌──────────┴──────────┐
+               ↓                     ↓
+             FACTS              DIMENSIONS
+               ↓                     ↓
+          Measures                Attributes
+               ↓                     ↓
+          Fact Type              SCD / History
+               └──────────┬──────────┘
+                          ↓
+                   STAR SCHEMA
+                          ↓
+               Multiple Business Stars
+                          ↓
+               Conformed Dimensions
+                          ↓
+                 Physical Implementation
+                          ↓
+                ETL / ELT / Pipelines
+                          ↓
+                    Data Quality
+                          ↓
+                    Performance
+```
+
+That is the **whole mental model**.
+
+---
+
+# Now let's go one level higher
+
+A senior engineer doesn't only ask:
+
+> "What tables do I create—
+
+They ask:
+
+### 1. What does the business need?
+
+### 2. What business process produces that information?
+
+### 3. What is the atomic grain?
+
+### 4. What history is required?
+
+### 5. What dimensions should be shared?
+
+### 6. What measures are mathematically valid?
+
+### 7. What is the expected volume?
+
+### 8. What queries will people run?
+
+### 9. Is atomic data needed, or is an aggregate enough?
+
+### 10. What should be stored versus calculated?
+
+### 11. What happens when source data changes?
+
+### 12. How will data quality be enforced?
+
+### 13. How will this work in Bronze/Silver/Gold?
+
+### 14. What should be optimized physically?
+
+### 15. Who will consume the final data?
+
+That's how you move away from "table-maker" thinking.
+
+---
+
+# One more critical concept: Source model ≠ Warehouse model
+
+Suppose source OLTP has:
+
+```text
+Customers
+Orders
+OrderItems
+Products
+Payments
+```
+
+You should NOT automatically copy those directly into the Gold analytical model.
+
+Source model:
+
+```text
+             Customers
+                 |
+               Orders
+                 |
+             OrderItems
+                 |
+              Products
+```
+
+Analytical model may become:
+
+```text
+DimCustomer
+DimProduct
+DimDate
+DimStore
+      \       |       /
+        FactSales
+```
+
+Why?
+
+Because they have different purposes.
+
+```text
+OLTP
+→ run applications
+
+Warehouse / analytical model
+→ analyze the business
+```
+
+---
+
+# And this is where Bronze / Silver / Gold fits
+
+A modern pipeline may be:
+
+```text
+SOURCE
+  ↓
+BRONZE
+  ↓
+SILVER
+  ↓
+GOLD
+```
+
+### Bronze
+
+```text
+Raw
+```
+
+### Silver
+
+```text
+Clean
+Standardize
+Validate
+Join where appropriate
+```
+
+### Gold
+
+```text
+Business-specific
+Analytical
+Consumption-ready
+```
+
+Then Gold could have:
+
+```text
+Sales Star
+Payment Star
+Delivery Star
+Inventory Star
+```
+
+So:
+
+```text
+                 GOLD
+                   │
+      ┌────────────┼────────────┐
+      ↓            ↓            ↓
+  Sales Star   Payment Star  Delivery Star
+```
+
+These are **multiple stars in one analytical environment**.
+
+Not necessarily multiple separate warehouses.
+
+---
+
+# The biggest thing I want you to remember
+
+Don't think:
+
+> "I know facts and dimensions, therefore I know data modeling."
+
+You know data modeling when you can receive a requirement like:
+
+> "We want daily inventory by product and store."
+
+and independently reason:
+
+```text
+Business process
+→ Inventory
+
+Event/state
+→ Inventory state
+
+Grain
+→ Product + Store + Day
+
+Fact type
+→ Periodic snapshot
+
+Fact
+→ FactInventorySnapshot
+
+Dimensions
+→ Product + Store + Date
+
+Measures
+→ Opening / received / sold / closing
+
+Star schema
+→ Product + Store + Date around inventory fact
+```
+
+**without someone telling you the answer.**
+
+That's the actual skill.
+
+---
+
+# Your final cheat sheet
+
+When you receive **ANY** business requirement, write this:
+
+```text
+1. BUSINESS REQUIREMENT
+   ↓
+2. BUSINESS PROCESS
+   ↓
+3. EVENT OR STATE
+   ↓
+4. GRAIN
+   "ONE ROW = __________"
+   ↓
+5. FACT TYPE
+   Transaction?
+   Periodic Snapshot?
+   Accumulating Snapshot?
+   Factless?
+   ↓
+6. FACT TABLE
+   ↓
+7. MEASURES
+   ↓
+8. DIMENSIONS
+   ↓
+9. DIMENSION ATTRIBUTES
+   ↓
+10. KEYS
+    ↓
+11. SCD / HISTORY
+    ↓
+12. CONFORMED DIMENSIONS
+    ↓
+13. STAR SCHEMA
+    ↓
+14. CHECK FOR GRAIN MISMATCH
+    ↓
+15. CHECK BUSINESS QUESTIONS
+```
+
+And the **three golden rules**:
+
+> **Business process determines the fact.**
+
+> **Grain determines what belongs inside the fact.**
+
+> **Dimensions provide the context for analyzing the fact.**
+
+Once those three become instinctive, **fact tables, dimensions, star schemas, multiple stars, SCDs, snapshots, conformed dimensions, and warehouse design all start fitting together naturally.**
+
+The best next step is to stop reading theory and do a **10-round design lab**: I'll give you only realistic business requirements, you design the **business process → grain → fact → dimensions → star**, and I'll review each one progressively from beginner to senior-level difficulty.
