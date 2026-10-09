@@ -837,3 +837,225 @@ Ask:
 > **"How is this measure mathematically valid to aggregate—**
 
 ---
+
+
+# PART 13 — Multiple FACT tables
+
+Now we move to the real enterprise.
+
+FlashCart has another requirement:
+
+> "Finance wants payment analytics."
+
+Is payment the same business process as sales?
+
+No.
+
+So we create:
+
+```text
+FactPayment
+────────────────────────────
+payment_key
+payment_id
+order_id
+
+customer_key
+store_key
+date_key
+payment_method_key
+
+attempt_number
+payment_status
+payment_amount
+processing_fee
+```
+
+### Grain
+
+```text
+ONE ROW = ONE PAYMENT ATTEMPT
+```
+
+Not order line.
+
+That matters enormously.
+
+---
+
+# PART 14 — Why FactSales and FactPayment must stay separate
+
+Imagine:
+
+```text
+Order
+ ├── Product A
+ ├── Product B
+ ├── Product C
+ └── Product D
+```
+
+and the payment process:
+
+```text
+Payment attempt 1 → Failed
+Payment attempt 2 → Failed
+Payment attempt 3 → Successful
+```
+
+If you combine them:
+
+```text
+4 order lines × 3 payment attempts
+```
+
+You can produce a multiplication effect.
+
+You may accidentally make the business think:
+
+> "Revenue is three times larger."
+
+This is called a **grain mismatch / fanout problem**.
+
+This is one of the reasons a senior engineer asks for the grain before writing a query.
+
+---
+
+# PART 15 — Our second STAR
+
+```text
+                 DimCustomer
+                      |
+                      |
+DimPaymentMethod -- FactPayment -- DimDate
+                      |
+                      |
+                  DimStore
+```
+
+Now we have:
+
+```text
+STAR 1
+FactSales
+   +
+Sales dimensions
+
+STAR 2
+FactPayment
+   +
+Payment dimensions
+```
+
+This is normal enterprise dimensional modeling.
+
+---
+
+# PART 16 — Shared dimensions
+
+But notice:
+
+```text
+FactSales → DimCustomer
+FactPayment → DimCustomer
+```
+
+Could both use the same customer dimension?
+
+# Yes.
+
+That's a:
+
+# **CONFORMED DIMENSION**
+
+Example:
+
+```text
+                       DimCustomer
+                     /            \
+                    /              \
+                   ↓                ↓
+              FactSales       FactPayment
+```
+
+Similarly:
+
+```text
+                       DimDate
+                     /        \
+                    /          \
+                   ↓            ↓
+              FactSales      FactPayment
+```
+
+Microsoft's current guidance specifically describes conformed dimensions as shared dimensions reused across multiple fact tables/stars and highlights Date and Product as common examples. ([Microsoft Learn][4])
+
+---
+
+# PART 17 — Why shared dimensions matter
+
+Suppose Sales says:
+
+```text
+Country = India
+```
+
+and Payments uses a completely different definition of country.
+
+Now management asks:
+
+> "Compare sales and payment activity by country."
+
+You can get inconsistent answers.
+
+A conformed dimension gives the organization a shared analytical definition.
+
+Think:
+
+```text
+ONE Customer Definition
+ONE Product Definition
+ONE Date Definition
+```
+
+shared across business processes.
+
+This is one of the most important enterprise-level modeling ideas.
+
+---
+
+# PART 18 — The BUS MATRIX
+
+Now we're getting into serious warehouse architecture.
+
+Create a matrix:
+
+| Business Process | Customer | Product | Store | Date | Promotion |
+| ---------------- | -------- | ------- | ----- | ---- | --------- |
+| Sales            | ✓        | ✓       | ✓     | ✓    | ✓         |
+| Payment          | ✓        | —       | ✓     | ✓    | —         |
+| Delivery         | ✓        | —       | ✓     | ✓    | —         |
+| Inventory        | —        | ✓       | ✓     | ✓    | —         |
+| Returns          | ✓        | ✓       | ✓     | ✓    | —         |
+
+Think about what this shows.
+
+Rows:
+
+```text
+business processes
+```
+
+Columns:
+
+```text
+dimensions
+```
+
+This lets you see which dimensions are shared and should be standardized.
+
+Kimball's current reference material still calls the enterprise bus matrix an essential planning/communication tool: rows are business processes and columns are dimensions, with shared dimensions becoming conformed. ([Kimball Group][5])
+
+---
+
+# PART 19 — Delivery fact
