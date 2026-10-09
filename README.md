@@ -39,3 +39,19 @@ flowchart LR
 3. **Respect Grain Invariance:** Every dimension key and every measurement in a fact table must exist at the exact declared grain of the row.
 4. **Conformed Dimensions are Non-Negotiable:** If `DimCustomer` or `DimProduct` means different things across departments, enterprise cross-process analytics is impossible.
 5. **Surrogate Keys Rule the Warehouse:** Never use operational natural keys directly as foreign keys in fact tables.
+---
+
+## ?? Corporate Bus Matrix Architecture
+
+The Enterprise Bus Matrix is the master blueprint that connects business processes to conformed dimensions. Each row represents a distinct business process (fact table), and each column represents a shared dimension.
+
+| Business Process / Fact Table | Grain | DimDate | DimCustomer | DimProduct | DimStore | DimWarehouse | DimCourier | DimPromotion |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **FactSalesLine** | One line item per order | ?? | ?? | ?? | ?? | ? | ? | ?? |
+| **FactPaymentAttempt** | One transaction attempt | ?? | ?? | ? | ?? | ? | ? | ? |
+| **FactDeliveryTrip** | One delivery dispatch | ?? | ?? | ? | ?? | ?? | ?? | ? |
+| **FactInventorySnapshot** | One product in warehouse / day | ?? | ? | ?? | ?? | ?? | ? | ? |
+| **FactProcurementReceipt** | One goods receipt line | ?? | ? | ?? | ? | ?? | ? | ? |
+| **FactCustomerReturn** | One returned item line | ?? | ?? | ?? | ?? | ? | ? | ? |
+
+> **Architect's Principle:** Two disparate facts can only be drilled across and compared directly in business reporting if they share at least one **conformed dimension** (e.g. comparing sales revenue and inventory holding value by DimProduct and DimDate).
