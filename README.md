@@ -79,3 +79,33 @@ Every measurement stored in an enterprise analytical fact table must fall into o
 
 ### The Cardinal Rule of Semi-Additive Facts
 Never SUM() inventory balances across dates. A warehouse holding 50 laptops on Monday and 50 laptops on Tuesday does not have 100 laptops in inventory. Use AVG(), FIRST_VALUE(), or LAST_VALUE() over the temporal dimension.
+
+
+---
+
+## ⏳ Slowly Changing Dimensions (SCD) Engineering Patterns
+
+In enterprise systems, entities change over time (e.g., a customer changes tiers, a store relocates, a product category is reclassified).
+
+| Pattern | Strategy | Warehouse Consequence |
+| :--- | :--- | :--- |
+| **SCD Type 0** | Retain Original | Attribute never changes (e.g., date of birth) |
+| **SCD Type 1** | Overwrite In-Place | Destroys historical reality; rewrites past reporting |
+| **SCD Type 2** | Add New Versioned Row (Standard) | Full historical truth preserved with valid_from/valid_to |
+| **SCD Type 3** | Add Previous Column | Preserves exactly one prior state (rarely scalable) |
+| **SCD Type 4** | Mini-Dimension Outrigger | High-frequency changing attributes split out into mart |
+
+### Production SCD Type 2 Table Blueprint
+```sql
+CREATE TABLE gold.dim_customer (
+    customer_sk         BIGINT NOT NULL,          -- Surrogate key for warehouse joins
+    customer_nk         VARCHAR(64) NOT NULL,      -- Natural/Business key from source OLTP
+    customer_name       VARCHAR(255),
+    customer_tier       VARCHAR(50),               -- Gold, Silver, Platinum
+    city                VARCHAR(100),
+    country             VARCHAR(100),
+    is_current          BOOLEAN NOT NULL,          -- TRUE for the active version
+    valid_from          TIMESTAMP NOT NULL,        -- Effective start timestamp
+    valid_to            TIMESTAMP NOT NULL         -- Effective end timestamp (or 9999-12-31)
+);
+```
