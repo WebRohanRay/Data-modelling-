@@ -1663,3 +1663,265 @@ warehouse surrogate key
 ---
 
 # PART 31 — Why surrogate keys matter
+
+
+Suppose customer 101 changes country.
+
+Old:
+
+```text
+customer_id = 101
+country = India
+```
+
+New:
+
+```text
+customer_id = 101
+country = Philippines
+```
+
+The business ID did not change.
+
+But the **historical state** did.
+
+With SCD Type 2:
+
+```text
+customer_key 10101
+customer_id 101
+country India
+```
+
+and later:
+
+```text
+customer_key 10102
+customer_id 101
+country Philippines
+```
+
+Now facts can point to the correct historical version.
+
+---
+
+# PART 32 — Slowly Changing Dimensions
+
+This is essential.
+
+## Type 0
+
+Never change it.
+
+```text
+Original value stays forever
+```
+
+Memory:
+
+> **0 = freeze**
+
+---
+
+## Type 1
+
+Overwrite.
+
+```text
+India
+   ↓
+Philippines
+```
+
+India disappears.
+
+Memory:
+
+> **1 = overwrite**
+
+---
+
+## Type 2
+
+Create a new version.
+
+```text
+India        ← old version
+Philippines  ← current version
+```
+
+Memory:
+
+> **2 = preserve history**
+
+This is the one you should know deeply.
+
+Databricks' current Lakeflow dimensional-modeling guidance explicitly supports SCD Type 2 for Gold-layer dimensions when historical tracking is required. ([Databricks Documentation][6])
+
+---
+
+# PART 33 — Why NOT every dimension attribute should use SCD2
+
+This is important.
+
+Suppose:
+
+```text
+customer_name
+customer_segment
+country
+email
+```
+
+change.
+
+Do you need historical versions of all of them?
+
+Not necessarily.
+
+The business decides.
+
+Example:
+
+### Name typo
+
+```text
+Rohn
+↓
+Rohan
+```
+
+Maybe Type 1.
+
+### Customer segment
+
+```text
+Silver
+↓
+Gold
+```
+
+Maybe Type 2 because analysts want historical segmentation.
+
+Senior thinking:
+
+> **SCD strategy is driven by business meaning and historical requirements, not by a blanket rule.**
+
+---
+
+# PART 34 — Junk dimension
+
+Suppose your sales event has tiny flags:
+
+```text
+is_gift
+is_online
+is_first_order
+is_coupon_used
+```
+
+Creating separate dimensions for each would be silly.
+
+You can combine them:
+
+```text
+DimOrderFlags
+────────────────────────
+flag_key
+is_gift
+is_online
+is_first_order
+is_coupon_used
+```
+
+That's a:
+
+# **Junk dimension**
+
+---
+
+# PART 35 — Degenerate dimension
+
+Suppose:
+
+```text
+order_number
+```
+
+is useful for identifying a transaction but doesn't need its own dimension.
+
+Keep it directly in:
+
+```text
+FactSales
+```
+
+Example:
+
+```text
+FactSales
+────────────────
+order_number
+customer_key
+product_key
+date_key
+quantity
+net_amount
+```
+
+This is a:
+
+# **Degenerate dimension**
+
+The important thing isn't the name.
+
+Understand:
+
+> **A business identifier can live in the fact without becoming a separate dimension.**
+
+---
+
+# PART 36 — Role-playing dimension
+
+We already saw Date.
+
+One fact can reference the same dimension multiple times.
+
+Example:
+
+```text
+FactShipment
+────────────────
+order_date_key
+ship_date_key
+delivery_date_key
+```
+
+All reference:
+
+```text
+DimDate
+```
+
+Different roles.
+
+Another example:
+
+```text
+FactFlight
+────────────────
+departure_airport_key
+arrival_airport_key
+```
+
+Both can reference:
+
+```text
+DimAirport
+```
+
+Microsoft's current dimensional modeling documentation explicitly describes this pattern. ([Microsoft Learn][4])
+
+---
+
+# PART 37 — Conformed dimension
