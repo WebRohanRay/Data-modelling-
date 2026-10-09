@@ -192,3 +192,34 @@ For hyper-growth on-demand delivery models, see our sister masterclass:
 | **Logistics Modeling** | Long-haul freight, inter-warehouse transfer | Dynamic courier dispatch, hyper-local routes |
 | **Inventory Grain** | Daily warehouse periodic snapshot | Real-time hourly stock observation |
 | **Lakehouse Tier** | Gold multi-star dimensional mart | Real-time streaming Bronze to Gold marts |
+
+
+---
+
+## 🚀 Recommended Reading & Implementation Roadmap
+
+```text
+Step 1: Read the Executive Architecture & Golden Rules (README.md)
+   │
+   ▼
+Step 2: Study the GlobalMart 78-Part Master Specification (big example.md)
+   │    └── Master enterprise multi-star schemas, SCD2, role-playing dimensions, and bus matrices
+   │
+   ▼
+Step 3: Analyze the FlashCart Quick-Commerce Architectural Study (FLASHCART_CASE_STUDY.md)
+   │    └── Explore hyper-scale, low-latency, real-time inventory and delivery dispatch models
+   │
+   ▼
+Step 4: Implement Gold Layer Medallion models in your target Data Warehouse (Snowflake / Databricks / BigQuery / Fabric)
+```
+
+---
+
+## 📖 Essential Literature & Authority Grounding
+* **The Data Warehouse Toolkit (3rd Edition)** — Ralph Kimball & Margy Ross
+* **Microsoft Fabric Dimensional Architecture Guidelines (2026)**
+* **Databricks Medallion & Unity Catalog Gold Layer Architecture (2026)**
+* **Designing Data-Intensive Applications** — Martin Kleppmann
+
+---
+*Maintained with precision for enterprise data architects, analytics engineers, and senior data professionals.*
