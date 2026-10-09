@@ -1059,3 +1059,300 @@ Kimball's current reference material still calls the enterprise bus matrix an es
 ---
 
 # PART 19 — Delivery fact
+
+
+Business requirement:
+
+> "Operations wants to analyze delivery performance."
+
+Business process:
+
+```text
+Delivery
+```
+
+Grain:
+
+```text
+ONE ROW = ONE DELIVERY
+```
+
+Fact:
+
+```text
+FactDelivery
+────────────────────────────
+delivery_key
+order_id
+
+customer_key
+store_key
+courier_key
+pickup_date_key
+delivery_date_key
+
+delivery_status
+promised_minutes
+actual_minutes
+distance_km
+delivery_fee
+late_minutes
+```
+
+Now look:
+
+```text
+pickup_date_key
+delivery_date_key
+```
+
+Both point to:
+
+```text
+DimDate
+```
+
+That's called a:
+
+# **ROLE-PLAYING DIMENSION**
+
+Same physical dimension.
+
+Different roles.
+
+```text
+                  DimDate
+                 /       \
+                /         \
+       Pickup Date     Delivery Date
+             \             /
+              \           /
+               FactDelivery
+```
+
+Microsoft's current dimension guidance explicitly uses this pattern for multiple roles such as order date, ship date, and delivery date. ([Microsoft Learn][4])
+
+---
+
+# PART 20 — Inventory is different
+
+Requirement:
+
+> "Management needs to know how much stock each product had in each store every day."
+
+Ask the most important question:
+
+### What does one row represent?
+
+```text
+ONE ROW = ONE PRODUCT + ONE STORE + ONE DAY
+```
+
+This is not a normal transaction.
+
+It is a **state snapshot**.
+
+So:
+
+```text
+FactInventorySnapshot
+────────────────────────────
+date_key
+product_key
+store_key
+
+opening_quantity
+received_quantity
+sold_quantity
+returned_quantity
+damaged_quantity
+closing_quantity
+inventory_value
+out_of_stock_flag
+```
+
+This is a:
+
+# **Periodic Snapshot Fact**
+
+---
+
+# PART 21 — Why inventory isn't just another sales fact
+
+Because:
+
+```text
+Sale = event
+Inventory = state
+```
+
+A sale says:
+
+> something happened.
+
+An inventory snapshot says:
+
+> this is the observed state at this point in time.
+
+That difference determines the fact type.
+
+---
+
+# PART 22 — Fact table types
+
+You should know these three extremely well.
+
+## 1. Transaction fact
+
+```text
+One row = one event
+```
+
+Examples:
+
+```text
+FactSales
+FactPayment
+FactReturn
+```
+
+---
+
+## 2. Periodic snapshot
+
+```text
+One row = state at a regular interval
+```
+
+Example:
+
+```text
+FactInventorySnapshot
+```
+
+---
+
+## 3. Accumulating snapshot
+
+Tracks a process through stages.
+
+Example:
+
+```text
+Order Created
+      ↓
+Packed
+      ↓
+Shipped
+      ↓
+Delivered
+```
+
+Possible fact:
+
+```text
+FactOrderFulfillment
+────────────────────────────
+order_key
+customer_key
+store_key
+
+created_date_key
+packed_date_key
+shipped_date_key
+delivered_date_key
+
+processing_minutes
+shipping_minutes
+delivery_minutes
+total_cycle_minutes
+```
+
+This fact changes as the process progresses.
+
+---
+
+# PART 23 — Factless fact
+
+Now something surprising.
+
+A fact table doesn't always need numeric measures.
+
+Example:
+
+> "Which students attended which classes—
+
+```text
+FactClassAttendance
+──────────────────────
+student_key
+class_key
+teacher_key
+date_key
+```
+
+No obvious numeric measure.
+
+But you can ask:
+
+```text
+COUNT(*)
+```
+
+to measure attendance.
+
+That's a:
+
+# **FACTLESS FACT TABLE**
+
+The rows themselves represent occurrences.
+
+Microsoft's current fact-table guidance explicitly includes factless facts as a valid fact-table design. ([Microsoft Learn][3])
+
+---
+
+# PART 24 — Return fact
+
+Business:
+
+> "Which products are returned and how much money is refunded—
+
+Grain:
+
+```text
+ONE ROW = ONE RETURNED ORDER LINE
+```
+
+Fact:
+
+```text
+FactReturn
+────────────────────────────
+return_key
+order_id
+order_line_number
+
+customer_key
+product_key
+store_key
+return_date_key
+return_reason_key
+
+quantity_returned
+refund_amount
+restocking_fee
+```
+
+Again:
+
+```text
+different process
++
+different grain
+=
+different fact
+```
+
+---
+
+# PART 25 — Multiple stars across the enterprise
