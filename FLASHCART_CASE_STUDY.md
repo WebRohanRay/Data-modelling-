@@ -1925,3 +1925,306 @@ Microsoft's current dimensional modeling documentation explicitly describes this
 ---
 
 # PART 37 — Conformed dimension
+
+
+Same dimension used across multiple stars.
+
+Example:
+
+```text
+                 DimProduct
+                 /    |     \
+                /     |      \
+               ↓      ↓       ↓
+          FactSales FactReturn FactInventory
+```
+
+The product definition is shared.
+
+This means everyone agrees:
+
+```text
+Product A
+Category X
+Brand Y
+```
+
+has the same analytical meaning across processes.
+
+---
+
+# PART 38 — Hierarchies
+
+Dimensions often contain levels.
+
+Product:
+
+```text
+Department
+   ↓
+Category
+   ↓
+Subcategory
+   ↓
+Product
+```
+
+Location:
+
+```text
+Country
+   ↓
+State
+   ↓
+City
+   ↓
+Store
+```
+
+Date:
+
+```text
+Year
+ ↓
+Quarter
+ ↓
+Month
+ ↓
+Week
+ ↓
+Day
+```
+
+These help users drill from high level to detail.
+
+---
+
+# PART 39 — Star vs Snowflake schema
+
+Star:
+
+```text
+             DimProduct
+                  |
+                  |
+DimCustomer --- FactSales --- DimDate
+                  |
+               DimStore
+```
+
+Snowflake:
+
+```text
+             DimCategory
+                  |
+             DimProduct
+                  |
+DimCustomer --- FactSales --- DimDate
+                  |
+               DimStore
+```
+
+Snowflake normalizes parts of the dimension.
+
+### Star
+
+Usually:
+
+* simpler
+* easier for BI
+* fewer joins
+* more denormalized
+
+### Snowflake
+
+Usually:
+
+* more normalized
+* more tables
+* more joins
+
+Don't memorize:
+
+> "Star is always better."
+
+Instead:
+
+> **Choose based on workload, usability, governance, performance and platform behavior.**
+
+Microsoft currently recommends star schema for Fabric analytical workloads, but modern cloud systems can use variations when the workload calls for them. ([Microsoft Learn][1])
+
+---
+
+# PART 40 — Normalized model vs dimensional model
+
+Now connect this with what you learned earlier.
+
+A transactional application might look like:
+
+```text
+Customer
+   ↓
+Order
+   ↓
+OrderItem
+   ↓
+Product
+```
+
+This is often highly normalized.
+
+Why?
+
+Because the application needs:
+
+```text
+consistent updates
+transaction integrity
+reduced duplication
+```
+
+Analytical systems often reshape this into:
+
+```text
+             DimCustomer
+                  |
+DimProduct --- FactSales --- DimDate
+                  |
+               DimStore
+```
+
+Why?
+
+Because analysts want:
+
+```text
+filter
+group
+aggregate
+compare
+drill down
+```
+
+So:
+
+```text
+OLTP
+→ optimized for operating the business
+
+OLAP
+→ optimized for analyzing the business
+```
+
+That distinction is foundational.
+
+---
+
+# PART 41 — Conceptual vs Logical vs Physical modeling
+
+You also need to know these.
+
+## Conceptual model
+
+Just business concepts:
+
+```text
+Customer
+Product
+Order
+Payment
+Store
+```
+
+No implementation details.
+
+---
+
+## Logical model
+
+Relationships and attributes:
+
+```text
+Customer
+---------
+customer_id
+name
+country
+
+Order
+---------
+order_id
+customer_id
+order_date
+```
+
+---
+
+## Physical model
+
+Actual implementation:
+
+```text
+customer_key BIGINT
+customer_id VARCHAR(50)
+customer_name VARCHAR(200)
+country_code CHAR(2)
+```
+
+Now you think about:
+
+```text
+data types
+partitioning
+clustering
+storage
+indexes
+platform
+performance
+```
+
+Memory:
+
+```text
+Conceptual = WHAT
+Logical    = HOW IT RELATES
+Physical   = HOW IT IS IMPLEMENTED
+```
+
+---
+
+# PART 42 — ER modeling vs dimensional modeling
+
+They are not the same thing.
+
+## ER / relational modeling
+
+Usually focuses on:
+
+```text
+entities
+relationships
+normalization
+transaction systems
+```
+
+## Dimensional modeling
+
+Focuses on:
+
+```text
+business processes
+facts
+dimensions
+grain
+analytics
+```
+
+A Data Engineer should know both.
+
+But for analytical Data Engineering:
+
+# **Grain + Facts + Dimensions + Star Schema + SCD are especially important.**
+
+---
+
+# PART 43 — Data Lake and Lakehouse enter the picture
