@@ -2536,3 +2536,318 @@ It is an **enterprise dimensional model**.
 ---
 
 # PART 49 — What you should think when a new requirement arrives
+
+
+Suppose management says:
+
+> "We need to know which products are frequently out of stock."
+
+Don't immediately create:
+
+```text
+FactOutOfStock
+```
+
+Ask:
+
+### 1. What business process?
+
+Inventory.
+
+### 2. What is the observation?
+
+Product/store inventory state.
+
+### 3. What is the grain?
+
+Maybe:
+
+```text
+one row = one product + one store + one day
+```
+
+### 4. What are the measures?
+
+```text
+closing_quantity
+out_of_stock_flag
+inventory_value
+```
+
+### 5. What dimensions?
+
+```text
+Product
+Store
+Date
+```
+
+### 6. What fact type?
+
+Periodic snapshot.
+
+Now you have a defensible design.
+
+---
+
+# PART 50 — How a HIGH-LEVEL engineer chooses a fact
+
+This is the exact thought process I want from you.
+
+## DON'T THINK:
+
+> "What columns should my fact table have—
+
+## THINK:
+
+> **What business event/state am I representing?**
+
+Then:
+
+> **What does one row mean?**
+
+Then:
+
+> **Which dimensions give the analytical context?**
+
+Then:
+
+> **Which measures belong naturally at that grain?**
+
+Then:
+
+> **How will this connect to other business processes?**
+
+Then:
+
+> **What history is needed?**
+
+Then:
+
+> **What is the expected volume?**
+
+Then:
+
+> **How will this be consumed?**
+
+Then:
+
+> **Do I need an atomic fact, snapshot, aggregate, or something else?**
+
+That is much more sophisticated than memorizing "fact = numeric, dimension = text."
+
+---
+
+# PART 51 — The 10 questions you should ask before designing a fact
+
+Keep this permanently.
+
+```text
+1. What business process am I modeling?
+
+2. What exactly does one row represent?
+
+3. What is the grain?
+
+4. Is this an event or a state?
+
+5. What measures exist at that grain?
+
+6. Which dimensions describe those measures?
+
+7. Which dimensions are shared with other facts?
+
+8. Do I need historical tracking?
+
+9. Is the fact atomic, snapshot, accumulating, or aggregate?
+
+10. What business questions must this model answer?
+```
+
+If you can answer these, you're doing actual modeling.
+
+---
+
+# PART 52 — The rules you should memorize
+
+Don't memorize 50 definitions.
+
+Memorize these **mental rules**:
+
+### Rule 1
+
+**Business process comes before fact table.**
+
+### Rule 2
+
+**Grain comes before columns.**
+
+### Rule 3
+
+**Every fact must have a clearly declared grain.**
+
+### Rule 4
+
+**Same process + same grain → usually same fact.**
+
+### Rule 5
+
+**Different process or incompatible grain → separate fact.**
+
+### Rule 6
+
+**Different question does NOT automatically mean a new fact.**
+
+### Rule 7
+
+**Fact = event or measurable state.**
+
+### Rule 8
+
+**Dimension = descriptive context.**
+
+### Rule 9
+
+**Measures must make sense at the fact's grain.**
+
+### Rule 10
+
+**Conformed dimensions connect multiple stars.**
+
+### Rule 11
+
+**SCD2 preserves historical dimension state.**
+
+### Rule 12
+
+**Star schema optimizes analytical usability.**
+
+### Rule 13
+
+**Gold is a serving/business layer, not automatically "the star schema."**
+
+### Rule 14
+
+**Logical modeling and physical implementation are different decisions.**
+
+### Rule 15
+
+**Don't optimize for textbook purity; optimize for business requirements, correctness, maintainability and workload.**
+
+---
+
+# PART 53 — The most common mistakes you must avoid
+
+## Mistake 1 — No grain
+
+```text
+FactSales
+```
+
+but nobody knows what one row means.
+
+**Never do this.**
+
+---
+
+## Mistake 2 — Mixing grains
+
+```text
+order line
++
+payment attempt
++
+delivery
+```
+
+in one table.
+
+Bad.
+
+---
+
+## Mistake 3 — One fact for every business question
+
+Bad:
+
+```text
+FactSalesByCountry
+FactSalesByProduct
+FactSalesByCustomer
+```
+
+when the same atomic FactSales can answer all three.
+
+---
+
+## Mistake 4 — One giant fact
+
+```text
+FactEverything
+```
+
+Usually a warning sign.
+
+---
+
+## Mistake 5 — Duplicating dimensions unnecessarily
+
+```text
+DimCustomerSales
+DimCustomerPayment
+DimCustomerReturn
+```
+
+when all should use the same conformed customer definition.
+
+---
+
+## Mistake 6 — Storing descriptive attributes everywhere
+
+Putting:
+
+```text
+customer_name
+customer_country
+product_name
+category
+store_city
+```
+
+into every massive fact can create unnecessary duplication.
+
+---
+
+## Mistake 7 — Blindly using SCD2
+
+Not every attribute needs historical versioning.
+
+---
+
+## Mistake 8 — Thinking every numeric column is a measure
+
+An ID can be numeric.
+
+That doesn't make it a business measure.
+
+---
+
+## Mistake 9 — Summing semi-additive metrics
+
+For example, inventory balance across dates.
+
+---
+
+## Mistake 10 — Designing from available columns instead of business questions
+
+The source gives you:
+
+```text
+20 columns
+```
+
+That doesn't mean the warehouse should have exactly the same 20-column structure.
+
+---
+
+# PART 54 — Now connect this to SQL
