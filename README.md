@@ -55,3 +55,27 @@ The Enterprise Bus Matrix is the master blueprint that connects business process
 | **FactCustomerReturn** | One returned item line | ?? | ?? | ?? | ?? | ? | ? | ? |
 
 > **Architect's Principle:** Two disparate facts can only be drilled across and compared directly in business reporting if they share at least one **conformed dimension** (e.g. comparing sales revenue and inventory holding value by DimProduct and DimDate).
+
+---
+
+## ?? Grain Declaration & Numeric Fact Taxonomy
+
+Every measurement stored in an enterprise analytical fact table must fall into one of three mathematical categories:
+
+`	ext
++------------------------------------------------------------------------+
+¦                        NUMERIC MEASURE TAXONOMY                        ¦
++------------------------------------------------------------------------¦
+¦ 1. Fully Additive  ¦ Sums across all dimensions (Time, Store, Product) ¦
+¦                    ¦ Example: sales_quantity, revenue_amount, discount ¦
++--------------------+---------------------------------------------------¦
+¦ 2. Semi-Additive   ¦ Sums across some dimensions, NOT across Time      ¦
+¦                    ¦ Example: inventory_on_hand, account_balance       ¦
++--------------------+---------------------------------------------------¦
+¦ 3. Non-Additive    ¦ Cannot be summed across any dimension (Ratios, %) ¦
+¦                    ¦ Example: unit_price, profit_margin_pct, discount% ¦
++------------------------------------------------------------------------+
+`
+
+### The Cardinal Rule of Semi-Additive Facts
+Never SUM() inventory balances across dates. A warehouse holding 50 laptops on Monday and 50 laptops on Tuesday does not have 100 laptops in inventory. Use AVG(), FIRST_VALUE(), or LAST_VALUE() over the temporal dimension.
