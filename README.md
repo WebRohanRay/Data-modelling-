@@ -130,3 +130,31 @@ Modern Lakehouse architectures (Databricks, Fabric, Snowflake) place dimensional
 ```
 
 > **Crucial Rule:** The Gold layer does not mirror the Silver layer. Silver models operational data fidelity; Gold models business questions, analytical grains, and cross-process decision making.
+
+
+---
+
+## 🛠️ Data Architect Decision Tree & Production Checklist
+
+Before signing off on any production data warehouse table design, execute this 6-point verification:
+
+```text
+[ ] 1. Is the grain explicitly written in the table documentation?
+      Bad:  "This table holds sales data."
+      Good: "One row represents one line item of a customer purchase at checkout."
+
+[ ] 2. Does every measure in the fact table exist at that exact grain?
+      (e.g., Shipping charge must not be repeated on every line item without allocation).
+
+[ ] 3. Are all dates role-played via surrogate foreign keys?
+      (e.g., order_date_sk, ship_date_sk, delivery_date_sk all joining to dim_date).
+
+[ ] 4. Are null foreign keys eliminated?
+      (Use standard -1 or 0 "Unknown" / "Not Applicable" rows in dimensions rather than NULLs).
+
+[ ] 5. Are high-cardinality operational IDs separated into Degenerate Dimensions?
+      (e.g., order_number, invoice_id kept in the fact table without a lookup table).
+
+[ ] 6. Has SCD Type 2 been applied strictly where historical reporting matters?
+      (e.g., product department reorganizations or customer territory updates).
+```
