@@ -158,3 +158,19 @@ Before signing off on any production data warehouse table design, execute this 6
 [ ] 6. Has SCD Type 2 been applied strictly where historical reporting matters?
       (e.g., product department reorganizations or customer territory updates).
 ```
+
+
+---
+
+## 📚 GlobalMart 78-Part Curriculum Navigation Index
+
+The complete 78-part deep-dive is available in [`big example.md`](./big%20example.md). Key learning modules:
+
+* **Foundations (Parts 1–6):** Business requirements, business process separation, grain declaration, bus matrix construction.
+* **Core Sales Star (Parts 7–11):** Granular fact sales, dimension design, why payments must never be mixed into sales facts.
+* **Logistics & Multi-Star (Parts 12–19):** Delivery events, role-playing dates, inventory periodic snapshots, procurement receipts.
+* **Enterprise Facts Catalog (Parts 20–25):** Shared dimensions, drill-across queries, conformed dimensions definition.
+* **Slowly Changing Dimensions (Parts 26–36):** SCD Type 1, Type 2, surrogate keys, date ranges, point-in-time joins.
+* **Advanced Dimensional Patterns (Parts 37–50):** Factless facts, bridge tables, junk dimensions, degenerate dimensions.
+* **Lakehouse & Performance (Parts 51–65):** Gold layer placement, partition strategy, clustering keys, materialized aggregates.
+* **Architecture Mastery (Parts 66–78):** Semantic layers, governance, checking model soundness, architectural rules for senior engineers.
