@@ -2228,3 +2228,311 @@ But for analytical Data Engineering:
 ---
 
 # PART 43 — Data Lake and Lakehouse enter the picture
+
+
+Now connect modeling to your current Azure/Databricks roadmap.
+
+A modern lakehouse pipeline can look like:
+
+```text
+SOURCE
+   ↓
+BRONZE
+   ↓
+SILVER
+   ↓
+GOLD
+   ↓
+BI / ML / APPLICATIONS
+```
+
+Databricks' current documentation, updated September 11, 2026, describes Bronze as raw, Silver as validated/cleaned, and Gold as enriched/business-ready, with progressive improvement of structure and quality through the layers. ([Databricks Documentation][7])
+
+Now the important distinction:
+
+### Bronze
+
+```text
+Raw source data
+```
+
+Not where you create your final star model.
+
+### Silver
+
+```text
+Cleaned
+Validated
+Standardized
+Reusable
+```
+
+Still fairly general-purpose.
+
+### Gold
+
+```text
+Business-ready
+Analytical
+Optimized for consumers
+```
+
+This is where a star schema may appear:
+
+```text
+Gold
+ │
+ ├── FactSales
+ ├── DimCustomer
+ ├── DimProduct
+ ├── DimDate
+ │
+ ├── FactPayment
+ ├── DimPaymentMethod
+ │
+ ├── FactDelivery
+ ├── DimCourier
+ │
+ └── FactInventorySnapshot
+```
+
+Databricks' current documentation explicitly describes star schemas fitting naturally in Gold, with Bronze/Silver handling ingestion and cleaning. ([Databricks Documentation][6])
+
+---
+
+# PART 44 — Gold does NOT automatically mean star schema
+
+This is a subtle but important correction.
+
+Don't think:
+
+```text
+Gold = star schema
+```
+
+Think:
+
+```text
+Gold = business-serving layer
+```
+
+It might contain:
+
+```text
+fact + dimension tables
+aggregated tables
+wide analytical tables
+feature tables
+serving tables
+semantic-model-ready tables
+```
+
+Star schema is **one very important option**.
+
+That's how you avoid becoming dogmatic about architecture.
+
+---
+
+# PART 45 — Modern architecture vs old textbook thinking
+
+A traditional warehouse might look like:
+
+```text
+Source
+   ↓
+ETL
+   ↓
+Data Warehouse
+   ↓
+Star Schema
+   ↓
+BI
+```
+
+A modern lakehouse might look like:
+
+```text
+Sources
+   ↓
+ADLS / cloud object storage
+   ↓
+Bronze
+   ↓
+Silver
+   ↓
+Gold
+   ↓
+Fact + Dimensions
+   ↓
+BI / ML
+```
+
+The modeling principles did not disappear.
+
+The **storage and processing architecture changed**.
+
+That's why you should learn:
+
+```text
+Data Modeling
++
+Data Warehousing
++
+Lakehouse
++
+Delta Lake
++
+Databricks
+```
+
+instead of thinking they're competing definitions.
+
+---
+
+# PART 46 — Current 2026 practice: don't confuse logical model with physical storage
+
+This is a very important high-level concept.
+
+You might logically design:
+
+```text
+FactSales
+DimCustomer
+DimProduct
+DimDate
+```
+
+But physically store/process the data using:
+
+```text
+ADLS
+Delta Lake
+Databricks
+Fabric
+Snowflake
+BigQuery
+```
+
+Those are different decisions.
+
+Think:
+
+```text
+LOGICAL DESIGN
+       ↓
+What does the data mean?
+       ↓
+FACTS / DIMENSIONS / GRAIN
+       ↓
+PHYSICAL PLATFORM
+       ↓
+How do we store/process it?
+```
+
+That is why your warehouse concepts transfer across platforms.
+
+---
+
+# PART 47 — What companies/platforms are doing now
+
+The important current pattern isn't "every company uses exactly the same model."
+
+Modern platforms support several architectures.
+
+What is clearly current in 2026:
+
+### Microsoft
+
+Microsoft currently teaches and recommends dimensional/star-schema design for Fabric Warehouse analytical workloads and says star schemas are well suited to filtering, grouping, sorting and summarization. ([Microsoft Learn][1])
+
+### Databricks
+
+Databricks currently documents:
+
+```text
+Bronze → Silver → Gold
+```
+
+and explicitly documents star-schema fact/dimension models in Gold-layer Lakeflow pipelines. ([Databricks Documentation][7])
+
+### Important conclusion
+
+Modern Data Engineers are not choosing between:
+
+```text
+"old warehouse modeling"
+```
+
+and:
+
+```text
+"modern lakehouse"
+```
+
+They often combine them:
+
+```text
+Lakehouse architecture
+       +
+Dimensional analytical modeling
+```
+
+That is exactly the kind of combination you should understand.
+
+---
+
+# PART 48 — A full FlashCart enterprise model
+
+Now let's make our final model.
+
+```text
+                         ┌──────────────┐
+                         │ DimCustomer  │
+                         └──────┬───────┘
+                                │
+                                │
+         ┌──────────────────────┼─────────────────────────┐
+         │                      │                         │
+         ▼                      ▼                         ▼
+   ┌───────────┐         ┌────────────┐            ┌────────────┐
+   │ FactSales │         │FactPayment │            │FactReturn  │
+   └─────┬─────┘         └─────┬──────┘            └─────┬──────┘
+         │                     │                         │
+         │                     │                         │
+         ▼                     ▼                         ▼
+   DimProduct           DimPaymentMethod          DimReturnReason
+         │
+         │
+         ├───────────────┐
+         │               │
+         ▼               ▼
+     DimStore          DimDate
+         │
+         │
+         ▼
+ FactInventorySnapshot
+         │
+         │
+      DimProduct
+         │
+      DimStore
+         │
+      DimDate
+
+
+ FactDelivery
+      │
+      ├── DimCustomer
+      ├── DimStore
+      ├── DimCourier
+      ├── DimDate (pickup role)
+      └── DimDate (delivery role)
+```
+
+This is no longer a beginner's "one fact table" model.
+
+It is an **enterprise dimensional model**.
+
+---
+
+# PART 49 — What you should think when a new requirement arrives
