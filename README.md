@@ -109,3 +109,24 @@ CREATE TABLE gold.dim_customer (
     valid_to            TIMESTAMP NOT NULL         -- Effective end timestamp (or 9999-12-31)
 );
 ```
+
+
+---
+
+## 🏅 Medallion Architecture & Dimensional Placement
+
+Modern Lakehouse architectures (Databricks, Fabric, Snowflake) place dimensional modeling squarely within the **Gold Layer**:
+
+```text
+┌─────────────────┐      ┌─────────────────────────┐      ┌─────────────────────────┐
+│  BRONZE LAYER   │ ---> │      SILVER LAYER       │ ---> │       GOLD LAYER        │
+│   (Raw Data)    │      │ (Cleaned & Conformed)   │      │  (Dimensional Models)   │
+├─────────────────┤      ├─────────────────────────┤      ├─────────────────────────┤
+│ • Append-only   │      │ • Deduplicated          │      │ • Star Schemas          │
+│ • Raw payloads  │      │ • Validated schema      │      │ • Conformed Dimensions  │
+│ • CDC streams   │      │ • Normalized/3NF tables │      │ • Business Fact Tables  │
+│ • Preserved API │      │ • Silver entities       │      │ • Sub-second BI Marts   │
+└─────────────────┘      └─────────────────────────┘      └─────────────────────────┘
+```
+
+> **Crucial Rule:** The Gold layer does not mirror the Silver layer. Silver models operational data fidelity; Gold models business questions, analytical grains, and cross-process decision making.
