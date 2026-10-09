@@ -1356,3 +1356,310 @@ different fact
 ---
 
 # PART 25 — Multiple stars across the enterprise
+
+
+Now our system looks like:
+
+```text
+                          DimCustomer
+                     /        |         \
+                    /         |          \
+                   ↓          ↓           ↓
+             FactSales   FactPayment   FactReturn
+                |             |             |
+                |             |             |
+           DimProduct    DimPayment     DimReturnReason
+                |
+                |
+             DimStore
+                |
+                |
+             DimDate
+```
+
+And:
+
+```text
+FactDelivery
+FactInventorySnapshot
+```
+
+also use shared dimensions.
+
+So an enterprise warehouse isn't necessarily:
+
+```text
+ONE FACT
+```
+
+It can be:
+
+```text
+MANY FACT TABLES
++
+SHARED DIMENSIONS
+=
+MULTIPLE STAR SCHEMAS
+```
+
+This is the exact mental model you were trying to understand earlier.
+
+---
+
+# PART 26 — How do I decide whether to make a NEW fact?
+
+Use this decision process.
+
+## Question 1
+
+### Is this a different business process?
+
+```text
+Sales
+vs
+Payment
+```
+
+Yes.
+
+Likely separate facts.
+
+---
+
+### Question 2
+
+### Is the grain different?
+
+```text
+Sales:
+one order line
+
+Inventory:
+one product-store-day
+```
+
+Different.
+
+Separate facts.
+
+---
+
+### Question 3
+
+### Can the measures coexist at the same grain?
+
+If yes, they can often belong in the same fact.
+
+Example:
+
+```text
+quantity
+gross_amount
+discount
+tax
+net_amount
+cost
+profit
+```
+
+All are valid at:
+
+```text
+one order line
+```
+
+So:
+
+```text
+FactSales
+```
+
+is appropriate.
+
+---
+
+### Question 4
+
+### Are you creating a fact only because of a different question?
+
+Be careful.
+
+Suppose:
+
+> Revenue by country
+
+and:
+
+> Revenue by product
+
+Those are NOT two fact tables.
+
+Same business process.
+
+Same grain.
+
+Same measures.
+
+One `FactSales` can answer both.
+
+---
+
+# PART 27 — VERY IMPORTANT: Question ≠ Fact Table
+
+This is crucial.
+
+Business questions:
+
+```text
+Revenue by country
+Revenue by product
+Revenue by customer
+Revenue by month
+Revenue by store
+```
+
+All can use:
+
+```text
+FactSales
+```
+
+You don't create:
+
+```text
+FactSalesByCountry
+FactSalesByProduct
+FactSalesByCustomer
+FactSalesByMonth
+```
+
+That would be terrible design.
+
+Instead:
+
+```text
+FactSales
+   |
+   +── DimCustomer
+   +── DimProduct
+   +── DimStore
+   +── DimDate
+```
+
+Dimensions give you different analysis perspectives.
+
+---
+
+# PART 28 — When WOULD you create another fact for the same broad business area?
+
+Now you're getting into advanced design.
+
+Suppose Sales has:
+
+### Detailed transaction fact
+
+```text
+FactSales
+grain = one order line
+```
+
+But management runs a report thousands of times per hour:
+
+```text
+Daily sales by store and product category
+```
+
+You might create:
+
+```text
+FactSalesDailyAggregate
+```
+
+with a different grain:
+
+```text
+ONE ROW = ONE STORE + PRODUCT CATEGORY + DAY
+```
+
+That's an **aggregate fact**.
+
+It exists for performance or specialized consumption.
+
+Microsoft's current fact-table guidance explicitly recognizes aggregate fact tables as rollups designed to accelerate common queries. ([Microsoft Learn][3])
+
+The key:
+
+> **This is not because the question is different. It's because the required data grain/performance/use case is different.**
+
+---
+
+# PART 29 — Dimensions aren't always tiny
+
+Another beginner mistake:
+
+> "Fact = huge, Dimension = small."
+
+Usually facts are very large and dimensions often have fewer rows, but dimensions can also be very large and wide.
+
+A customer dimension can contain millions of customers and many attributes.
+
+Microsoft's current guidance explicitly notes that dimensions can be millions of rows and potentially hundreds of attributes; what matters is whether the dimension supports the necessary filtering, grouping, and historical analysis. ([Microsoft Learn][4])
+
+So:
+
+> **Dimension is defined by role, not row count.**
+
+---
+
+# PART 30 — Surrogate keys
+
+Now let's solve history.
+
+Suppose:
+
+```text
+customer_id
+```
+
+comes from the source system.
+
+You could put that directly into your fact.
+
+But warehouses often create:
+
+```text
+customer_key
+```
+
+as a surrogate key.
+
+Dimension:
+
+```text
+DimCustomer
+────────────────────────────
+customer_key
+customer_id
+customer_name
+country
+customer_segment
+effective_from
+effective_to
+is_current
+```
+
+Here:
+
+```text
+customer_id
+=
+business/source key
+
+customer_key
+=
+warehouse surrogate key
+```
+
+---
+
+# PART 31 — Why surrogate keys matter
